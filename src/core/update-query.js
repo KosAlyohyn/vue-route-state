@@ -44,9 +44,7 @@ export function createQueryUpdater(route, router, fields, options = {}) {
 
     pendingQuery = query
 
-    const navigation = router[history]({
-      query,
-    })
+    const navigation = router[history](createNavigationTarget(route, query))
     const trackedNavigation = Promise.resolve(navigation).finally(() => {
       if (pendingNavigation === trackedNavigation) {
         pendingQuery = null
@@ -89,6 +87,31 @@ function buildQuery(route, fields, orderedFields, values, sourceQuery) {
   }
 
   return query
+}
+
+function createNavigationTarget(route, query) {
+  const target = {
+    query,
+    hash: route.hash,
+  }
+
+  if (route.name != null) {
+    target.name = route.name
+    target.params = cloneRouteParams(route.params)
+  } else {
+    target.path = route.path
+  }
+
+  return target
+}
+
+function cloneRouteParams(params) {
+  return Object.fromEntries(
+    Object.entries(params).map(([name, value]) => [
+      name,
+      Array.isArray(value) ? [...value] : value,
+    ]),
+  )
 }
 
 function normalizeHistory(history) {

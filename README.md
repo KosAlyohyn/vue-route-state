@@ -316,6 +316,9 @@ useUrlParam('page', {
 
 No-op updates do not call `router.replace()` or `router.push()`.
 
+Query writes preserve the current route target. Named routes keep their `name`,
+`params`, and `hash`; unnamed routes keep their resolved `path` and `hash`.
+
 `patch()`, `clear()`, and `reset()` can override the configured mode for one
 navigation:
 
