@@ -2,6 +2,7 @@ import { computed } from 'vue'
 
 import {
   createField,
+  hasFieldQueryValue,
   readField,
   serializeFieldValue,
 } from '../core/create-field.js'
@@ -51,6 +52,11 @@ export function useUrlState(schema, options = {}) {
       ),
       actionOptions,
     )
+  }
+
+  state.hasQueryValue = (name) => {
+    assertKnownFields(fields, { [name]: null })
+    return hasFieldQueryValue(route, fields[name])
   }
 
   state.snapshot = () => snapshot(route, fields)
