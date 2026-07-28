@@ -4,8 +4,12 @@ import { getCodec } from '../codecs/index.js'
 import { valueEquals } from '../helpers/equality.js'
 
 export function readField(route, field) {
+  return readFieldValue(route.query, field)
+}
+
+export function readFieldValue(query, field) {
   const codec = getCodec(field.type)
-  const raw = readRawValue(route.query, field)
+  const raw = readRawValue(query, field)
 
   return codec.parse(raw, field)
 }
@@ -35,12 +39,12 @@ export function serializeFieldValue(field, value) {
   return serialized
 }
 
-export function createField(route, updateQuery, field) {
+export function createField(route, updateQuery, field, resolveValue) {
   getCodec(field.type)
 
   return computed({
     get() {
-      return readField(route, field)
+      return resolveValue ? resolveValue() : readField(route, field)
     },
     set(value) {
       updateQuery({
