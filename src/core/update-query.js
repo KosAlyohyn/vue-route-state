@@ -4,15 +4,12 @@ import { cloneQuery, deleteFieldKeys } from '../helpers/query.js'
 import { serializeFieldValue } from './create-field.js'
 
 export function createQueryUpdater(route, router, fields, options = {}) {
-  const history = options.history ?? 'replace'
+  const defaultHistory = normalizeHistory(options.history ?? 'replace')
   let pendingQuery = null
   let pendingNavigation = null
 
-  if (history !== 'replace' && history !== 'push') {
-    throw new Error(`Unsupported history mode: ${history}`)
-  }
-
-  return async function updateQuery(values) {
+  return async function updateQuery(values, actionOptions = {}) {
+    const history = normalizeHistory(actionOptions.history ?? defaultHistory)
     const baseQuery = pendingQuery ?? route.query
     const query = cloneQuery(baseQuery)
 
@@ -56,4 +53,12 @@ export function createQueryUpdater(route, router, fields, options = {}) {
 
     return trackedNavigation
   }
+}
+
+function normalizeHistory(history) {
+  if (history !== 'replace' && history !== 'push') {
+    throw new Error(`Unsupported history mode: ${history}`)
+  }
+
+  return history
 }

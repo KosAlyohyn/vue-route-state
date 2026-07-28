@@ -46,9 +46,9 @@ describe('codecs', () => {
 
   it('reads and writes YYYY-MM-DD dates', () => {
     expect(parseDate('2026-07-28', { defaultValue: null })).toBe('2026-07-28')
-    expect(parseDate(['2026-07-28', '2026-07-29'], { defaultValue: null })).toBe(
-      '2026-07-28',
-    )
+    expect(
+      parseDate(['2026-07-28', '2026-07-29'], { defaultValue: null }),
+    ).toBe('2026-07-28')
     expect(parseDate('2026-02-31', { defaultValue: '2026-01-01' })).toBe(
       '2026-01-01',
     )

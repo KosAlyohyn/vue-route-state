@@ -20,22 +20,25 @@ export function useUrlState(schema, options = {}) {
     state[name] = createField(route, updateQuery, field)
   }
 
-  state.patch = async (values) => {
+  state.patch = async (values, actionOptions) => {
     assertKnownFields(fields, values)
-    return updateQuery(values)
+    return updateQuery(values, actionOptions)
   }
 
-  state.clear = async (names) => {
+  state.clear = async (names, actionOptions) => {
     const selected = names ?? Object.keys(fields)
     assertKnownFields(
       fields,
       Object.fromEntries(selected.map((name) => [name, null])),
     )
 
-    return updateQuery(Object.fromEntries(selected.map((name) => [name, null])))
+    return updateQuery(
+      Object.fromEntries(selected.map((name) => [name, null])),
+      actionOptions,
+    )
   }
 
-  state.reset = async (names) => {
+  state.reset = async (names, actionOptions) => {
     const selected = names ?? Object.keys(fields)
     assertKnownFields(
       fields,
@@ -46,6 +49,7 @@ export function useUrlState(schema, options = {}) {
       Object.fromEntries(
         selected.map((name) => [name, fields[name].defaultValue]),
       ),
+      actionOptions,
     )
   }
 

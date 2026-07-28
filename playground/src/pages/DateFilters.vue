@@ -61,7 +61,9 @@ const hasDateQuery = computed(() => {
     Object.prototype.hasOwnProperty.call(route.query, 'period_end')
   )
 })
-const hasRawDateQuery = computed(() => rawPeriodStart.value || rawPeriodEnd.value)
+const hasRawDateQuery = computed(() => {
+  return rawPeriodStart.value || rawPeriodEnd.value
+})
 
 watch(
   () => route.query,
@@ -106,8 +108,8 @@ function clearState() {
     <header class="page-header">
       <h2>Date filters</h2>
       <p>
-        Date URL state with strict <code>YYYY-MM-DD</code> parsing and
-        canonical writes from strings or Date objects.
+        Date URL state with strict <code>YYYY-MM-DD</code> parsing and canonical
+        writes from strings or Date objects.
       </p>
     </header>
 
@@ -143,7 +145,11 @@ function clearState() {
       </div>
 
       <p class="actions">
-        <button type="button" :disabled="!hasRawDateQuery" @click="writeRawDates">
+        <button
+          type="button"
+          :disabled="!hasRawDateQuery"
+          @click="writeRawDates"
+        >
           Apply the entered data
         </button>
         <button type="button" @click="loadInvalidDates">
