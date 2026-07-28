@@ -2,22 +2,60 @@
   "name": "vue-url-state",
   "version": "0.1.0",
   "description": "Minimal Vue 3 composables for keeping reactive state in Vue Router query parameters.",
+  "license": "MIT",
+  "author": {
+    "name": "Konstantyn Alyohyn",
+    "url": "https://github.com/KosAlyohyn"
+  },
+  "keywords": [
+    "vue",
+    "vue3",
+    "vue-router",
+    "router",
+    "url",
+    "url-state",
+    "query",
+    "query-params",
+    "composable"
+  ],
+  "homepage": "https://github.com/KosAlyohyn/vue-url-state#readme",
+  "bugs": {
+    "url": "https://github.com/KosAlyohyn/vue-url-state/issues"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/KosAlyohyn/vue-url-state.git"
+  },
   "type": "module",
+  "packageManager": "npm@11.12.1",
   "main": "./dist/vue-url-state.cjs",
   "module": "./dist/vue-url-state.js",
+  "types": "./index.d.ts",
   "exports": {
     ".": {
+      "types": "./index.d.ts",
       "import": "./dist/vue-url-state.js",
-      "require": "./dist/vue-url-state.cjs"
+      "require": "./dist/vue-url-state.cjs",
+      "default": "./dist/vue-url-state.js"
     }
   },
+  "sideEffects": false,
   "files": [
     "dist",
+    "index.d.ts",
     "README.md"
   ],
+  "publishConfig": {
+    "access": "public"
+  },
+  "engines": {
+    "node": ">=18"
+  },
   "scripts": {
     "test": "vitest run",
+    "test:watch": "vitest",
     "build": "vite build",
+    "prepublishOnly": "npm run lint && npm run test && npm run build",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier . --write",
