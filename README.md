@@ -103,10 +103,58 @@ Supported field options:
   allowedValues,
   positive,
   omitDefault,
+  enabledWhen,
 }
 ```
 
 `key` defaults to the schema field name. `omitDefault` defaults to `true`, so assigning the default value removes the parameter from the URL. Set `omitDefault: false` to write default values explicitly.
+
+## Conditional fields
+
+`enabledWhen` and the `order` option apply to `useUrlState()`.
+
+Use `enabledWhen` for fields that only apply when other URL state has a
+particular value:
+
+```js
+const state = useUrlState(
+  {
+    mode: {
+      type: 'string',
+      defaultValue: 'simple',
+      allowedValues: ['simple', 'advanced'],
+    },
+    detail: {
+      type: 'string',
+      defaultValue: '',
+      enabledWhen: ({ values }) => values.mode === 'advanced',
+    },
+  },
+  {
+    order: ['mode', 'detail'],
+  },
+)
+```
+
+The predicate receives:
+
+```js
+{
+  field, // current schema field name
+  values, // values for the current read or update
+  query, // query being read or updated
+  route, // current Vue Router route
+}
+```
+
+Fields listed in `order` are resolved first. Remaining fields follow their
+schema declaration order. This makes dependencies deterministic even when a
+dependent field is declared before the field it reads. Fields placed before the
+current field are guaranteed to be normalized before its predicate runs.
+
+When `enabledWhen` returns `false`, the field reads as its `defaultValue`.
+During the next state write, its primary key and aliases are removed from the
+URL. `patch()` can enable a field and assign its value in the same call.
 
 ## Types
 
@@ -343,7 +391,7 @@ The library is split into small modules:
 
 - `codecs/` parse and serialize supported field types.
 - `core/create-field.js` creates writable computed refs and reads current values.
-- `core/update-query.js` clones the current query, updates only managed keys, preserves unmanaged keys, and performs no-op detection.
+- `core/update-query.js` rebuilds managed query state, preserves unmanaged keys, and performs no-op detection.
 - `helpers/` contains schema normalization, query helpers, equality checks, and Vue Router context validation.
 - `composables/` exposes `useUrlParam` and `useUrlState`.
 

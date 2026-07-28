@@ -224,6 +224,58 @@ describe('useUrlState', () => {
     )
   })
 
+  it('resolves and removes conditionally enabled fields in configured order', async () => {
+    const { router, run } = await createHarness(
+      '/?mode=advanced&detail=visible&external=value',
+    )
+    const state = run(() =>
+      useUrlState(
+        {
+          detail: {
+            type: 'string',
+            defaultValue: '',
+            enabledWhen: ({ values }) => values.mode === 'advanced',
+          },
+          mode: {
+            type: 'string',
+            defaultValue: 'simple',
+            allowedValues: ['simple', 'advanced'],
+          },
+        },
+        {
+          order: ['mode', 'detail'],
+        },
+      ),
+    )
+
+    expect(state.mode.value).toBe('advanced')
+    expect(state.detail.value).toBe('visible')
+
+    await state.patch({ mode: 'simple' })
+
+    expect(state.detail.value).toBe('')
+    expect(state.hasQueryValue('detail')).toBe(false)
+    expect(router.currentRoute.value.query).toEqual({
+      external: 'value',
+    })
+
+    await state.patch({
+      mode: 'advanced',
+      detail: 'next',
+    })
+
+    expect(router.currentRoute.value.query).toEqual({
+      detail: 'next',
+      external: 'value',
+      mode: 'advanced',
+    })
+
+    await router.replace('/?mode=simple&detail=stale')
+
+    expect(state.detail.value).toBe('')
+    expect(state.hasQueryValue('detail')).toBe(true)
+  })
+
   it('reacts to browser back and forward navigation', async () => {
     const { router, run } = await createHarness('/?page=1')
     const state = run(() => useUrlState(schema(), { history: 'push' }))
