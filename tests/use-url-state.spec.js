@@ -222,6 +222,41 @@ describe('useUrlState', () => {
     expect(state.page.value).toBe(3)
   })
 
+  it('overrides history for an individual action', async () => {
+    const { router, run } = await createHarness('/?page=1')
+    const state = run(() => useUrlState(schema()))
+    const push = vi.spyOn(router, 'push')
+    const replace = vi.spyOn(router, 'replace')
+
+    await state.patch({ page: 2 }, { history: 'push' })
+
+    expect(push).toHaveBeenCalledTimes(1)
+    expect(replace).not.toHaveBeenCalled()
+    expect(router.currentRoute.value.query).toEqual({ page: '2' })
+  })
+
+  it('can replace for an individual action when push is the default', async () => {
+    const { router, run } = await createHarness('/?page=1')
+    const state = run(() => useUrlState(schema(), { history: 'push' }))
+    const push = vi.spyOn(router, 'push')
+    const replace = vi.spyOn(router, 'replace')
+
+    await state.clear(['page'], { history: 'replace' })
+
+    expect(replace).toHaveBeenCalledTimes(1)
+    expect(push).not.toHaveBeenCalled()
+    expect(router.currentRoute.value.query).toEqual({})
+  })
+
+  it('rejects unsupported history for an individual action', async () => {
+    const { run } = await createHarness('/')
+    const state = run(() => useUrlState(schema()))
+
+    await expect(state.reset(['page'], { history: 'invalid' })).rejects.toThrow(
+      'Unsupported history mode: invalid',
+    )
+  })
+
   it('uses replace history by default', async () => {
     const { router, run } = await createHarness('/?page=1')
     const state = run(() => useUrlState(schema()))

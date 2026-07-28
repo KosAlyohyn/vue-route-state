@@ -134,6 +134,20 @@ await state.patch({
 
 `patch()` updates only provided fields. `undefined` means “do not change this field”. `null` removes the field from the URL. Unknown fields throw `Unknown URL state field: name`.
 
+The second argument can override the history mode for one action:
+
+```js
+await state.patch(
+  {
+    search: 'hello',
+    page: 1,
+  },
+  {
+    history: 'push',
+  },
+)
+```
+
 Sequential assignments are supported, but they can create separate router navigations:
 
 ```js
@@ -233,6 +247,19 @@ useUrlParam('page', {
 ```
 
 No-op updates do not call `router.replace()` or `router.push()`.
+
+`patch()`, `clear()`, and `reset()` can override the configured mode for one
+navigation:
+
+```js
+await state.clear(['search'], {
+  history: 'push',
+})
+
+await state.reset(['page'], {
+  history: 'replace',
+})
+```
 
 ## Universal Example
 
