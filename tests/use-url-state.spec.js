@@ -104,6 +104,66 @@ describe('useUrlState', () => {
     })
   })
 
+  it('preserves named route params and hash during query navigation', async () => {
+    const { router, run } = await createHarness(
+      '/cases/case-42?modal=case-info#activity',
+      [
+        {
+          path: '/cases/:slug',
+          name: 'case',
+          component: {},
+        },
+      ],
+    )
+    const state = run(() => useUrlState(schema()))
+    const replace = vi.spyOn(router, 'replace')
+
+    await state.patch({ search: 'hello' })
+
+    expect(replace).toHaveBeenCalledWith({
+      name: 'case',
+      params: {
+        slug: 'case-42',
+      },
+      query: {
+        modal: 'case-info',
+        search: 'hello',
+      },
+      hash: '#activity',
+    })
+    expect(router.currentRoute.value.fullPath).toBe(
+      '/cases/case-42?modal=case-info&search=hello#activity',
+    )
+  })
+
+  it('preserves path and hash for unnamed routes', async () => {
+    const { router, run } = await createHarness(
+      '/countries/ua?modal=details#overview',
+      [
+        {
+          path: '/countries/:code',
+          component: {},
+        },
+      ],
+    )
+    const state = run(() => useUrlState(schema()))
+    const replace = vi.spyOn(router, 'replace')
+
+    await state.patch({ page: 2 })
+
+    expect(replace).toHaveBeenCalledWith({
+      path: '/countries/ua',
+      query: {
+        modal: 'details',
+        page: '2',
+      },
+      hash: '#overview',
+    })
+    expect(router.currentRoute.value.fullPath).toBe(
+      '/countries/ua?modal=details&page=2#overview',
+    )
+  })
+
   it('ignores undefined inside patch and deletes null values', async () => {
     const { router, run } = await createHarness('/?search=old&page=2&enabled=1')
     const state = run(() => useUrlState(schema()))

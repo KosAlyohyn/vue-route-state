@@ -1,15 +1,18 @@
 import { createApp, nextTick } from 'vue'
 import { createMemoryHistory, createRouter } from 'vue-router'
 
-export async function createHarness(path = '/') {
+export async function createHarness(
+  path = '/',
+  routes = [
+    {
+      path: '/',
+      component: {},
+    },
+  ],
+) {
   const router = createRouter({
     history: createMemoryHistory(),
-    routes: [
-      {
-        path: '/',
-        component: {},
-      },
-    ],
+    routes,
   })
   const app = createApp({})
 
