@@ -10,6 +10,12 @@ export function readField(route, field) {
   return codec.parse(raw, field)
 }
 
+export function hasFieldQueryValue(route, field) {
+  return [field.key, ...field.aliases].some((key) =>
+    Object.prototype.hasOwnProperty.call(route.query, key),
+  )
+}
+
 export function serializeFieldValue(field, value) {
   if (value === null) {
     return null

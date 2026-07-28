@@ -202,6 +202,28 @@ describe('useUrlState', () => {
     expect(state.values.value.search).toBe('next')
   })
 
+  it('reports whether a field is explicitly present in the query', async () => {
+    const { router, run } = await createHarness(
+      '/?page=invalid&tags=active&enabled',
+    )
+    const state = run(() => useUrlState(schema()))
+
+    expect(state.page.value).toBe(1)
+    expect(state.hasQueryValue('page')).toBe(true)
+    expect(state.hasQueryValue('tags')).toBe(true)
+    expect(state.hasQueryValue('enabled')).toBe(true)
+    expect(state.hasQueryValue('search')).toBe(false)
+
+    await router.replace('/?search=&page=1')
+
+    expect(state.hasQueryValue('search')).toBe(true)
+    expect(state.hasQueryValue('page')).toBe(true)
+    expect(state.hasQueryValue('tags')).toBe(false)
+    expect(() => state.hasQueryValue('missing')).toThrow(
+      'Unknown URL state field: missing',
+    )
+  })
+
   it('reacts to browser back and forward navigation', async () => {
     const { router, run } = await createHarness('/?page=1')
     const state = run(() => useUrlState(schema(), { history: 'push' }))

@@ -194,6 +194,26 @@ state.values.value
 
 `values` is a computed ref containing current parsed values for the whole schema.
 
+## hasQueryValue
+
+Use `hasQueryValue()` when the application needs to distinguish an absent
+parameter from an explicitly provided value:
+
+```js
+state.page.value // 1 for both URLs
+
+// /cases
+state.hasQueryValue('page') // false
+
+// /cases?page=1
+state.hasQueryValue('page') // true
+```
+
+The method checks both the primary `key` and its `aliases`. It reports whether
+the query key is present, independently of parsing: an invalid value such as
+`?page=invalid` is present even when `state.page.value` falls back to its
+`defaultValue`.
+
 ## aliases
 
 Aliases are read-only fallback keys.
