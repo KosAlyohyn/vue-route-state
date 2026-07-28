@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import { parseArray, serializeArray } from '../src/codecs/array.js'
 import { parseBoolean, serializeBoolean } from '../src/codecs/boolean.js'
+import { parseDate, serializeDate } from '../src/codecs/date.js'
 import { getCodec } from '../src/codecs/index.js'
 import { parseNumber, serializeNumber } from '../src/codecs/number.js'
 import { parseString, serializeString } from '../src/codecs/string.js'
@@ -41,6 +42,26 @@ describe('codecs', () => {
     expect(parseBoolean(undefined, { defaultValue: false })).toBe(false)
     expect(serializeBoolean(true)).toBe('1')
     expect(serializeBoolean(false)).toBe('0')
+  })
+
+  it('reads and writes YYYY-MM-DD dates', () => {
+    expect(parseDate('2026-07-28', { defaultValue: null })).toBe('2026-07-28')
+    expect(parseDate(['2026-07-28', '2026-07-29'], { defaultValue: null })).toBe(
+      '2026-07-28',
+    )
+    expect(parseDate('2026-02-31', { defaultValue: '2026-01-01' })).toBe(
+      '2026-01-01',
+    )
+    expect(parseDate('today', { defaultValue: null })).toBeNull()
+    expect(parseDate(undefined, { defaultValue: '2026-01-01' })).toBe(
+      '2026-01-01',
+    )
+    expect(serializeDate('2026-07-28')).toBe('2026-07-28')
+    expect(serializeDate(new Date('2026-07-28T12:30:00.000Z'))).toBe(
+      '2026-07-28',
+    )
+    expect(serializeDate('2026-99-99')).toBeNull()
+    expect(serializeDate(new Date('invalid'))).toBeNull()
   })
 
   it('reads and writes string arrays', () => {

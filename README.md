@@ -66,6 +66,11 @@ const state = useUrlState({
     type: 'boolean',
     defaultValue: false,
   },
+  periodStart: {
+    type: 'date',
+    key: 'period_start',
+    defaultValue: null,
+  },
   tags: {
     type: 'array',
     key: 'tags[]',
@@ -110,6 +115,8 @@ Supported field options:
 `number` supports finite JavaScript numbers using `Number(value)`. Invalid values such as `abc`, `NaN`, and values less than or equal to zero with `positive: true` return `defaultValue`. `0` is valid unless `positive: true` is set.
 
 `boolean` reads `1`, `0`, `true`, and `false`. It writes canonical values as `1` and `0`. `false` is a valid value.
+
+`date` supports `YYYY-MM-DD` strings and valid `Date` objects. Invalid dates such as `today`, `2026-99-99`, and `2026-02-31` return `defaultValue`. Dates are written as `YYYY-MM-DD`.
 
 `array` supports arrays of strings. Empty arrays remove the query parameter. Objects in arrays are not supported.
 
