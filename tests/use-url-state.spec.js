@@ -56,6 +56,35 @@ describe('useUrlState', () => {
     expect(state.order.value).toBe('newest')
   })
 
+  it('supports date fields', async () => {
+    const { router, run } = await createHarness('/?period_start=2026-07-28')
+    const state = run(() =>
+      useUrlState({
+        periodStart: {
+          type: 'date',
+          key: 'period_start',
+          defaultValue: '2026-01-01',
+        },
+        periodEnd: {
+          type: 'date',
+          key: 'period_end',
+          defaultValue: null,
+        },
+      }),
+    )
+
+    expect(state.periodStart.value).toBe('2026-07-28')
+
+    state.periodStart.value = '2026-02-31'
+    state.periodEnd.value = new Date('2026-07-29T12:00:00.000Z')
+    await flushRouter()
+
+    expect(router.currentRoute.value.query).toEqual({
+      period_end: '2026-07-29',
+    })
+    expect(state.periodStart.value).toBe('2026-01-01')
+  })
+
   it('patches several fields in one navigation and preserves other query params', async () => {
     const { router, run } = await createHarness('/?external=value&page=2')
     const state = run(() => useUrlState(schema()))
