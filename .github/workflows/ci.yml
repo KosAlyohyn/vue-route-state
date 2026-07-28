@@ -34,6 +34,9 @@ jobs:
       - name: Build library
         run: npm run build
 
+      - name: Check npm package contents
+        run: npm pack --dry-run
+
       - name: Install playground dependencies
         run: npm ci --prefix playground
 
