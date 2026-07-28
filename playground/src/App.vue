@@ -2,6 +2,7 @@
 const links = [
   { to: '/search', label: 'Search filters' },
   { to: '/boolean', label: 'Boolean filters' },
+  { to: '/date', label: 'Date filters' },
   { to: '/tag', label: 'Tag filters' },
   { to: '/legacy', label: 'Legacy URLs' },
 ]
