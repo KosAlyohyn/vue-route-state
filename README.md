@@ -1,13 +1,13 @@
-# vue-url-state
+# vue-route-state
 
-`vue-url-state` is a small Vue 3 library for storing reactive state in Vue Router query parameters.
+`vue-route-state` is a small Vue 3 library for storing reactive state in Vue Router query parameters.
 
 The API is intentionally close to `useState`, but the URL is the source of truth. Values are read from `route.query`, and writes use `router.replace()` by default, so browser reload, manual URL edits, back, and forward navigation update the returned refs automatically.
 
 ## Install
 
 ```bash
-npm install vue-url-state
+npm install vue-route-state
 ```
 
 Peer dependencies:
@@ -25,7 +25,7 @@ export { useUrlParam, useUrlState }
 ## useUrlParam
 
 ```js
-import { useUrlParam } from 'vue-url-state'
+import { useUrlParam } from 'vue-route-state'
 
 const search = useUrlParam('search', {
   type: 'string',
@@ -50,7 +50,7 @@ search.value = null
 ## useUrlState
 
 ```js
-import { useUrlState } from 'vue-url-state'
+import { useUrlState } from 'vue-route-state'
 
 const state = useUrlState({
   search: {
@@ -336,7 +336,7 @@ await state.reset(['page'], {
 
 ```js
 import { computed } from 'vue'
-import { useUrlState } from 'vue-url-state'
+import { useUrlState } from 'vue-route-state'
 
 const state = useUrlState({
   search: {

@@ -1,5 +1,5 @@
 import { computed } from 'vue'
-import { useUrlState } from 'vue-url-state'
+import { useUrlState } from 'vue-route-state'
 
 export function useFilters() {
   const state = useUrlState({

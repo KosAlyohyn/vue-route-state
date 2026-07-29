@@ -6,7 +6,7 @@ export function useRouterContext() {
 
   if (!route || !router) {
     throw new Error(
-      'vue-url-state requires Vue Router. Install Vue Router before calling URL state composables.',
+      'vue-route-state requires Vue Router. Install Vue Router before calling URL state composables.',
     )
   }
 

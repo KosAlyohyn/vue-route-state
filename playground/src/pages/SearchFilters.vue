@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue'
-import { useUrlState } from 'vue-url-state'
+import { useUrlState } from 'vue-route-state'
 
 const state = useUrlState({
   query: {
