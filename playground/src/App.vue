@@ -4,6 +4,7 @@ const links = [
   { to: '/boolean', label: 'Boolean filters' },
   { to: '/date', label: 'Date filters' },
   { to: '/tag', label: 'Tag filters' },
+  { to: '/groups', label: 'Field groups' },
   { to: '/legacy', label: 'Legacy URLs' },
 ]
 </script>

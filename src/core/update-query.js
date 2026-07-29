@@ -3,18 +3,30 @@ import { cloneQuery, deleteFieldKeys } from '../helpers/query.js'
 import { orderFields } from '../helpers/schema.js'
 
 import { serializeFieldValue } from './create-field.js'
+import {
+  groupsForField,
+  normalizeGroups,
+  shouldClearDisabledField,
+} from './groups.js'
 import { cloneValue, isFieldEnabled, resolveValues } from './resolve-values.js'
 
 export function createQueryUpdater(route, router, fields, options = {}) {
   const defaultHistory = normalizeHistory(options.history ?? 'replace')
   const orderedFields = orderFields(fields, options.order)
+  const groups = normalizeGroups(fields, options.groups)
   let pendingQuery = null
   let pendingNavigation = null
 
   return async function updateQuery(values, actionOptions = {}) {
     const history = normalizeHistory(actionOptions.history ?? defaultHistory)
     const baseQuery = pendingQuery ?? route.query
-    const nextValues = resolveValues(route, fields, orderedFields, baseQuery)
+    const nextValues = resolveValues(
+      route,
+      fields,
+      orderedFields,
+      baseQuery,
+      groups,
+    )
 
     for (const [name, value] of Object.entries(values)) {
       if (value === undefined) {
@@ -36,6 +48,7 @@ export function createQueryUpdater(route, router, fields, options = {}) {
       orderedFields,
       nextValues,
       baseQuery,
+      groups,
     )
 
     if (queryEquals(baseQuery, query)) {
@@ -58,15 +71,12 @@ export function createQueryUpdater(route, router, fields, options = {}) {
   }
 }
 
-function buildQuery(route, fields, orderedFields, values, sourceQuery) {
+function buildQuery(route, fields, orderedFields, values, sourceQuery, groups) {
   const query = cloneQuery(sourceQuery)
-
-  for (const field of Object.values(fields)) {
-    deleteFieldKeys(query, field)
-  }
 
   for (const name of orderedFields) {
     const field = fields[name]
+    const fieldGroups = groupsForField(groups, name)
     const context = {
       field: name,
       values,
@@ -74,11 +84,20 @@ function buildQuery(route, fields, orderedFields, values, sourceQuery) {
       route,
     }
 
-    if (!isFieldEnabled(field, context)) {
+    if (!isFieldEnabled(field, context, fieldGroups)) {
       values[name] = cloneValue(field.defaultValue)
+
+      if (
+        typeof field.enabledWhen === 'function' ||
+        shouldClearDisabledField(fieldGroups, context)
+      ) {
+        deleteFieldKeys(query, field)
+      }
+
       continue
     }
 
+    deleteFieldKeys(query, field)
     const serialized = serializeFieldValue(field, values[name])
 
     if (serialized != null) {

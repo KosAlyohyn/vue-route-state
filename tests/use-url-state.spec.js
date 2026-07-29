@@ -336,6 +336,95 @@ describe('useUrlState', () => {
     expect(state.hasQueryValue('detail')).toBe(true)
   })
 
+  it('supports conditionally enabled field groups', async () => {
+    const { router, run } = await createHarness(
+      '/?modal=property_owners&owner_type=company&page=2&external=value',
+    )
+    const state = run(() =>
+      useUrlState(
+        {
+          modal: {
+            type: 'string',
+            defaultValue: null,
+          },
+          ownerType: {
+            type: 'string',
+            key: 'owner_type',
+            defaultValue: 'all',
+          },
+          page: {
+            type: 'number',
+            defaultValue: 1,
+            positive: true,
+          },
+        },
+        {
+          order: ['modal', 'ownerType', 'page'],
+          groups: {
+            propertyOwners: {
+              fields: ['ownerType', 'page'],
+              enabledWhen: ({ values }) => values.modal === 'property_owners',
+            },
+          },
+        },
+      ),
+    )
+
+    expect(state.ownerType.value).toBe('company')
+    expect(state.page.value).toBe(2)
+
+    await state.patch({ modal: null })
+
+    expect(state.ownerType.value).toBe('all')
+    expect(state.page.value).toBe(1)
+    expect(state.hasQueryValue('ownerType')).toBe(false)
+    expect(router.currentRoute.value.query).toEqual({
+      external: 'value',
+    })
+
+    await router.replace('/?owner_type=stale&page=3')
+
+    expect(state.ownerType.value).toBe('all')
+    expect(state.page.value).toBe(1)
+    expect(state.hasQueryValue('ownerType')).toBe(true)
+
+    await state.patch({
+      modal: 'property_owners',
+      ownerType: 'person',
+      page: 4,
+    })
+
+    expect(router.currentRoute.value.query).toEqual({
+      modal: 'property_owners',
+      owner_type: 'person',
+      page: '4',
+    })
+  })
+
+  it('throws for unknown fields in groups', async () => {
+    const { run } = await createHarness('/')
+
+    expect(() =>
+      run(() =>
+        useUrlState(
+          {
+            modal: {
+              type: 'string',
+              defaultValue: null,
+            },
+          },
+          {
+            groups: {
+              modalGroup: {
+                fields: ['missing'],
+              },
+            },
+          },
+        ),
+      ),
+    ).toThrow('Unknown URL state group field: missing')
+  })
+
   it('reacts to browser back and forward navigation', async () => {
     const { router, run } = await createHarness('/?page=1')
     const state = run(() => useUrlState(schema(), { history: 'push' }))

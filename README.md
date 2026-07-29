@@ -156,6 +156,50 @@ When `enabledWhen` returns `false`, the field reads as its `defaultValue`.
 During the next state write, its primary key and aliases are removed from the
 URL. `patch()` can enable a field and assign its value in the same call.
 
+## Field groups
+
+Use `groups` when several fields share the same availability rule:
+
+```js
+const state = useUrlState(
+  {
+    view: {
+      type: 'string',
+      defaultValue: 'list',
+      allowedValues: ['list', 'details'],
+    },
+    detailTab: {
+      type: 'string',
+      key: 'detail_tab',
+      defaultValue: 'summary',
+    },
+    detailPage: {
+      type: 'number',
+      key: 'detail_page',
+      defaultValue: 1,
+      positive: true,
+    },
+  },
+  {
+    order: ['view', 'detailTab', 'detailPage'],
+    groups: {
+      details: {
+        fields: ['detailTab', 'detailPage'],
+        enabledWhen: ({ values }) => values.view === 'details',
+      },
+    },
+  },
+)
+```
+
+When a group is disabled, its fields read as their `defaultValue`. During the
+next state write, their primary keys and aliases are removed from the URL by
+default. Set `clearWhenDisabled: false` to preserve disabled group query keys
+while still reading default values.
+
+Group predicates receive the same context as field predicates plus `group`,
+the group name.
+
 ## Types
 
 `string` reads the first query value when Vue Router provides an array. Missing values return `defaultValue`.
@@ -250,10 +294,10 @@ parameter from an explicitly provided value:
 ```js
 state.page.value // 1 for both URLs
 
-// /cases
+// /items
 state.hasQueryValue('page') // false
 
-// /cases?page=1
+// /items?page=1
 state.hasQueryValue('page') // true
 ```
 

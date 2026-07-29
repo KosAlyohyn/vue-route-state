@@ -2,6 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 import BooleanFilters from './pages/BooleanFilters.vue'
 import DateFilters from './pages/DateFilters.vue'
+import Groups from './pages/Groups.vue'
 import LegacyUrls from './pages/LegacyUrls.vue'
 import SearchFilters from './pages/SearchFilters.vue'
 import TagFilters from './pages/TagFilters.vue'
@@ -32,6 +33,11 @@ export const router = createRouter({
       path: '/tag',
       name: 'tag',
       component: TagFilters,
+    },
+    {
+      path: '/groups',
+      name: 'groups',
+      component: Groups,
     },
     {
       path: '/legacy',
