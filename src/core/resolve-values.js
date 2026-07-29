@@ -1,10 +1,12 @@
 import { readFieldValue } from './create-field.js'
+import { areGroupsEnabled, groupsForField } from './groups.js'
 
 export function resolveValues(
   route,
   fields,
   orderedFields,
   query = route.query,
+  groups = [],
 ) {
   const values = {}
 
@@ -16,7 +18,7 @@ export function resolveValues(
       query,
       route,
     }
-    const value = isFieldEnabled(field, context)
+    const value = isFieldEnabled(field, context, groupsForField(groups, name))
       ? readFieldValue(query, field)
       : field.defaultValue
 
@@ -26,12 +28,14 @@ export function resolveValues(
   return values
 }
 
-export function isFieldEnabled(field, context) {
+export function isFieldEnabled(field, context, groups = []) {
   if (typeof field.enabledWhen !== 'function') {
-    return true
+    return areGroupsEnabled(groups, context)
   }
 
-  return Boolean(field.enabledWhen(context))
+  return (
+    Boolean(field.enabledWhen(context)) && areGroupsEnabled(groups, context)
+  )
 }
 
 export function cloneValue(value) {

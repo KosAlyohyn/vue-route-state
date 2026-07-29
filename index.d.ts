@@ -18,6 +18,21 @@ export interface UrlStateEnabledWhenContext<
   route: RouteLocationNormalizedLoaded
 }
 
+export interface UrlStateGroupEnabledWhenContext<
+  Values extends Record<string, unknown> = Record<string, unknown>,
+> extends UrlStateEnabledWhenContext<Values> {
+  group: string
+}
+
+export interface UrlStateGroupOptions<
+  Schema extends UrlStateSchema,
+  Values extends Record<string, unknown> = UrlStateValues<Schema>,
+> {
+  fields: readonly (keyof Schema & string)[]
+  enabledWhen?: (context: UrlStateGroupEnabledWhenContext<Values>) => boolean
+  clearWhenDisabled?: boolean
+}
+
 export interface UrlStateFieldOptions<
   Type extends UrlStateType = UrlStateType,
   Value = unknown,
@@ -83,6 +98,7 @@ export type UrlStateSchema<
 export interface UrlStateOptions<Schema extends UrlStateSchema> {
   history?: UrlStateHistoryMode
   order?: readonly (keyof Schema & string)[]
+  groups?: Record<string, UrlStateGroupOptions<Schema>>
 }
 
 export type UrlStateFieldValue<Option> =

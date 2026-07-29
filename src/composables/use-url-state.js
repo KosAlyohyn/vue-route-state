@@ -5,6 +5,7 @@ import {
   hasFieldQueryValue,
   serializeFieldValue,
 } from '../core/create-field.js'
+import { normalizeGroups } from '../core/groups.js'
 import { resolveValues } from '../core/resolve-values.js'
 import { createQueryUpdater } from '../core/update-query.js'
 import { cloneQuery, deleteFieldKeys } from '../helpers/query.js'
@@ -19,6 +20,7 @@ export function useUrlState(schema, options = {}) {
   const { route, router } = useRouterContext()
   const fields = normalizeSchema(schema)
   const orderedFields = orderFields(fields, options.order)
+  const groups = normalizeGroups(fields, options.groups)
   const updateQuery = createQueryUpdater(route, router, fields, options)
   const state = {}
 
@@ -27,7 +29,8 @@ export function useUrlState(schema, options = {}) {
       route,
       updateQuery,
       field,
-      () => resolveValues(route, fields, orderedFields)[name],
+      () =>
+        resolveValues(route, fields, orderedFields, route.query, groups)[name],
     )
   }
 
@@ -69,15 +72,15 @@ export function useUrlState(schema, options = {}) {
     return hasFieldQueryValue(route, fields[name])
   }
 
-  state.snapshot = () => snapshot(route, fields, orderedFields)
+  state.snapshot = () => snapshot(route, fields, orderedFields, groups)
 
-  state.values = computed(() => snapshot(route, fields, orderedFields))
+  state.values = computed(() => snapshot(route, fields, orderedFields, groups))
 
   return state
 }
 
-function snapshot(route, fields, orderedFields) {
-  return resolveValues(route, fields, orderedFields)
+function snapshot(route, fields, orderedFields, groups) {
+  return resolveValues(route, fields, orderedFields, route.query, groups)
 }
 
 export function serializeManagedDefaults(route, fields) {
