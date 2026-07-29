@@ -103,6 +103,6 @@ describe('useUrlParam', () => {
           defaultValue: '',
         }),
       ),
-    ).toThrow('vue-url-state requires Vue Router')
+    ).toThrow('vue-route-state requires Vue Router')
   })
 })

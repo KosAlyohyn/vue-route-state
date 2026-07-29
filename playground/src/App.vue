@@ -13,7 +13,7 @@ const links = [
     <aside class="sidebar">
       <div>
         <p class="eyebrow">Playground</p>
-        <h1>vue-url-state</h1>
+        <h1>vue-route-state</h1>
       </div>
 
       <nav class="nav">

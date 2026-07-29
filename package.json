@@ -1,5 +1,5 @@
 {
-  "name": "vue-url-state",
+  "name": "vue-route-state",
   "version": "0.1.0",
   "description": "Minimal Vue 3 composables for keeping reactive state in Vue Router query parameters.",
   "license": "MIT",
@@ -18,25 +18,25 @@
     "query-params",
     "composable"
   ],
-  "homepage": "https://github.com/KosAlyohyn/vue-url-state#readme",
+  "homepage": "https://github.com/KosAlyohyn/vue-route-state#readme",
   "bugs": {
-    "url": "https://github.com/KosAlyohyn/vue-url-state/issues"
+    "url": "https://github.com/KosAlyohyn/vue-route-state/issues"
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/KosAlyohyn/vue-url-state.git"
+    "url": "git+https://github.com/KosAlyohyn/vue-route-state.git"
   },
   "type": "module",
   "packageManager": "npm@11.12.1",
-  "main": "./dist/vue-url-state.cjs",
-  "module": "./dist/vue-url-state.js",
+  "main": "./dist/vue-route-state.cjs",
+  "module": "./dist/vue-route-state.js",
   "types": "./index.d.ts",
   "exports": {
     ".": {
       "types": "./index.d.ts",
-      "import": "./dist/vue-url-state.js",
-      "require": "./dist/vue-url-state.cjs",
-      "default": "./dist/vue-url-state.js"
+      "import": "./dist/vue-route-state.js",
+      "require": "./dist/vue-route-state.cjs",
+      "default": "./dist/vue-route-state.js"
     }
   },
   "sideEffects": false,

@@ -1,7 +1,7 @@
 <script setup>
 import { computed, ref } from 'vue'
+import { useUrlState } from 'vue-route-state'
 import { useRoute, useRouter } from 'vue-router'
-import { useUrlState } from 'vue-url-state'
 
 const route = useRoute()
 const router = useRouter()

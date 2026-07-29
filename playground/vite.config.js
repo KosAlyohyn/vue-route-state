@@ -7,7 +7,7 @@ export default defineConfig({
   plugins: [vue()],
   resolve: {
     alias: {
-      'vue-url-state': fileURLToPath(
+      'vue-route-state': fileURLToPath(
         new URL('../src/index.js', import.meta.url),
       ),
     },
