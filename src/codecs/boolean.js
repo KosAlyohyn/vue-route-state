@@ -1,5 +1,8 @@
 import { firstQueryValue } from '../helpers/query.js'
 
+const DEFAULT_TRUE_VALUE = 'true'
+const DEFAULT_FALSE_VALUE = 'false'
+
 export function parseBoolean(raw, field) {
   const value = firstQueryValue(raw)
 
@@ -7,17 +10,31 @@ export function parseBoolean(raw, field) {
     return field.defaultValue
   }
 
-  if (value === '1' || value === 'true') {
+  const stringValue = String(value)
+  const trueValue = field.trueValue ?? DEFAULT_TRUE_VALUE
+  const falseValue = field.falseValue ?? DEFAULT_FALSE_VALUE
+
+  if (
+    stringValue === trueValue ||
+    stringValue === '1' ||
+    stringValue === 'true'
+  ) {
     return true
   }
 
-  if (value === '0' || value === 'false') {
+  if (
+    stringValue === falseValue ||
+    stringValue === '0' ||
+    stringValue === 'false'
+  ) {
     return false
   }
 
   return field.defaultValue
 }
 
-export function serializeBoolean(value) {
-  return value ? '1' : '0'
+export function serializeBoolean(value, field = {}) {
+  return value
+    ? (field.trueValue ?? DEFAULT_TRUE_VALUE)
+    : (field.falseValue ?? DEFAULT_FALSE_VALUE)
 }

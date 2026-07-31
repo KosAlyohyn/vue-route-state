@@ -66,7 +66,10 @@ export type NumberUrlStateFieldOptions<
 export type BooleanUrlStateFieldOptions<
   Value extends boolean = boolean,
   Values extends Record<string, unknown> = Record<string, unknown>,
-> = UrlStateFieldOptions<'boolean', Value, Values>
+> = UrlStateFieldOptions<'boolean', Value, Values> & {
+  trueValue?: string
+  falseValue?: string
+}
 
 export type DateUrlStateValue = string | Date | null
 
