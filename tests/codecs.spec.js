@@ -30,7 +30,11 @@ describe('codecs', () => {
     expect(parseNumber('abc', { defaultValue: 1 })).toBe(1)
     expect(parseNumber('NaN', { defaultValue: 1 })).toBe(1)
     expect(parseNumber('-1', { defaultValue: 1, positive: true })).toBe(1)
+    expect(parseNumber('2.5', { defaultValue: 1, integer: true })).toBe(1)
+    expect(parseNumber('2', { defaultValue: 1, integer: true })).toBe(2)
     expect(serializeNumber(2.5)).toBe('2.5')
+    expect(serializeNumber(2.5, { integer: true })).toBeNull()
+    expect(serializeNumber(2, { integer: true })).toBe('2')
   })
 
   it('reads boolean values and defaults', () => {
