@@ -210,7 +210,7 @@ the group name.
 
 `date` supports `YYYY-MM-DD` strings and valid `Date` objects. Invalid dates such as `today`, `2026-99-99`, and `2026-02-31` return `defaultValue`. Dates are written as `YYYY-MM-DD`.
 
-`array` supports arrays of strings. Empty arrays remove the query parameter. Objects in arrays are not supported.
+`array` supports arrays of strings. It reads repeated query parameters and comma-separated fallback values, such as `?tags[]=one&tags[]=two` and `?tags=one,two`. Empty arrays remove the query parameter. Objects in arrays are not supported.
 
 ## patch
 

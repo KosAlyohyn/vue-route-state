@@ -2,21 +2,22 @@ import { arrayQueryValue } from '../helpers/query.js'
 
 export function parseArray(raw, field) {
   const values = arrayQueryValue(raw)
+    .flatMap((value) => String(value).split(','))
+    .map((value) => value.trim())
+    .filter((value) => value !== '')
 
   if (!values.length) {
     return field.defaultValue
   }
 
-  const result = values.map((value) => String(value))
-
   if (
     field.allowedValues &&
-    result.some((value) => !field.allowedValues.includes(value))
+    values.some((value) => !field.allowedValues.includes(value))
   ) {
     return field.defaultValue
   }
 
-  return result
+  return values
 }
 
 export function serializeArray(value) {
