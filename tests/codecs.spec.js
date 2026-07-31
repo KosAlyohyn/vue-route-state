@@ -40,8 +40,24 @@ describe('codecs', () => {
     expect(parseBoolean('false', { defaultValue: true })).toBe(false)
     expect(parseBoolean(undefined, { defaultValue: true })).toBe(true)
     expect(parseBoolean(undefined, { defaultValue: false })).toBe(false)
-    expect(serializeBoolean(true)).toBe('1')
-    expect(serializeBoolean(false)).toBe('0')
+    expect(serializeBoolean(true)).toBe('true')
+    expect(serializeBoolean(false)).toBe('false')
+  })
+
+  it('supports custom boolean serialization values', () => {
+    const field = {
+      defaultValue: false,
+      trueValue: '1',
+      falseValue: '0',
+    }
+
+    expect(parseBoolean('true', field)).toBe(true)
+    expect(parseBoolean('false', field)).toBe(false)
+    expect(parseBoolean('1', field)).toBe(true)
+    expect(parseBoolean('0', field)).toBe(false)
+    expect(parseBoolean('yes', field)).toBe(false)
+    expect(serializeBoolean(true, field)).toBe('1')
+    expect(serializeBoolean(false, field)).toBe('0')
   })
 
   it('reads and writes YYYY-MM-DD dates', () => {

@@ -206,7 +206,7 @@ the group name.
 
 `number` supports finite JavaScript numbers using `Number(value)`. Invalid values such as `abc`, `NaN`, and values less than or equal to zero with `positive: true` return `defaultValue`. `0` is valid unless `positive: true` is set.
 
-`boolean` reads `1`, `0`, `true`, and `false`. It writes canonical values as `1` and `0`. `false` is a valid value.
+`boolean` reads `true`, `false`, `1`, and `0`. It writes canonical values as `true` and `false` by default. Set `trueValue` and `falseValue` on a boolean field to write custom canonical values, such as `1` and `0`. `false` is a valid value.
 
 `date` supports `YYYY-MM-DD` strings and valid `Date` objects. Invalid dates such as `today`, `2026-99-99`, and `2026-02-31` return `defaultValue`. Dates are written as `YYYY-MM-DD`.
 

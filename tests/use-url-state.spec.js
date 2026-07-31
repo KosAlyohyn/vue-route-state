@@ -99,7 +99,7 @@ describe('useUrlState', () => {
     expect(replace).toHaveBeenCalledTimes(1)
     expect(router.currentRoute.value.query).toEqual({
       external: 'value',
-      enabled: '1',
+      enabled: 'true',
       search: 'hello',
     })
   })
@@ -196,7 +196,7 @@ describe('useUrlState', () => {
 
     await state.clear(['search', 'page'])
     expect(router.currentRoute.value.query).toEqual({
-      enabled: '1',
+      enabled: 'true',
       external: 'value',
       order: 'oldest',
     })
@@ -225,7 +225,7 @@ describe('useUrlState', () => {
 
     await state.reset(['order'])
     expect(router.currentRoute.value.query).toEqual({
-      enabled: '1',
+      enabled: 'true',
       external: 'value',
       order: 'newest',
       page: '2',
@@ -502,7 +502,7 @@ describe('useUrlState', () => {
     await flushRouter()
 
     expect(router.currentRoute.value.query).toEqual({
-      enabled: '1',
+      enabled: 'true',
       external: 'value',
       page: '2',
       search: 'hello',
