@@ -3,7 +3,7 @@ import { firstQueryValue } from '../helpers/query.js'
 export function parseString(raw, field) {
   const value = firstQueryValue(raw)
 
-  if (value == null) {
+  if (value == null || value === '') {
     return field.defaultValue
   }
 
