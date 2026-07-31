@@ -61,6 +61,7 @@ export type NumberUrlStateFieldOptions<
 > = UrlStateFieldOptions<'number', Value, Values> & {
   allowedValues?: readonly Value[]
   positive?: boolean
+  integer?: boolean
 }
 
 export type BooleanUrlStateFieldOptions<

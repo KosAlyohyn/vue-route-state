@@ -9,11 +9,7 @@ export function parseNumber(raw, field) {
 
   const number = Number(value)
 
-  if (!Number.isFinite(number)) {
-    return field.defaultValue
-  }
-
-  if (field.positive && number <= 0) {
+  if (!isValidNumber(number, field)) {
     return field.defaultValue
   }
 
@@ -24,12 +20,28 @@ export function parseNumber(raw, field) {
   return number
 }
 
-export function serializeNumber(value) {
+export function serializeNumber(value, field = {}) {
   const number = Number(value)
 
-  if (!Number.isFinite(number)) {
+  if (!isValidNumber(number, field)) {
     return null
   }
 
   return String(number)
+}
+
+function isValidNumber(number, field) {
+  if (!Number.isFinite(number)) {
+    return false
+  }
+
+  if (field.integer && !Number.isInteger(number)) {
+    return false
+  }
+
+  if (field.positive && number <= 0) {
+    return false
+  }
+
+  return true
 }

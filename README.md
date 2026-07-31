@@ -61,6 +61,7 @@ const state = useUrlState({
     type: 'number',
     defaultValue: 1,
     positive: true,
+    integer: true,
   },
   enabled: {
     type: 'boolean',
@@ -102,6 +103,7 @@ Supported field options:
   defaultValue,
   allowedValues,
   positive,
+  integer,
   omitDefault,
   enabledWhen,
 }
@@ -178,6 +180,7 @@ const state = useUrlState(
       key: 'detail_page',
       defaultValue: 1,
       positive: true,
+      integer: true,
     },
   },
   {
@@ -204,7 +207,7 @@ the group name.
 
 `string` reads the first query value when Vue Router provides an array. Missing values return `defaultValue`.
 
-`number` supports finite JavaScript numbers using `Number(value)`. Invalid values such as `abc`, `NaN`, and values less than or equal to zero with `positive: true` return `defaultValue`. `0` is valid unless `positive: true` is set.
+`number` supports finite JavaScript numbers using `Number(value)`. Invalid values such as `abc`, `NaN`, and values less than or equal to zero with `positive: true` return `defaultValue`. Set `integer: true` to reject fractional values such as `2.5`. `0` is valid unless `positive: true` is set.
 
 `boolean` reads `true`, `false`, `1`, and `0`. It writes canonical values as `true` and `false` by default. Set `trueValue` and `falseValue` on a boolean field to write custom canonical values, such as `1` and `0`. `false` is a valid value.
 
