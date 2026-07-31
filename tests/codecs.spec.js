@@ -10,6 +10,7 @@ import { parseString, serializeString } from '../src/codecs/string.js'
 describe('codecs', () => {
   it('reads string defaults and first array values', () => {
     expect(parseString(undefined, { defaultValue: '' })).toBe('')
+    expect(parseString('', { defaultValue: 'fallback' })).toBe('fallback')
     expect(parseString(['first', 'second'], { defaultValue: '' })).toBe('first')
     expect(serializeString('hello')).toBe('hello')
   })
