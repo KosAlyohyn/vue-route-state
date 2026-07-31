@@ -3,6 +3,8 @@ import type { LocationQuery, RouteLocationNormalizedLoaded } from 'vue-router'
 
 export type UrlStateHistoryMode = 'replace' | 'push'
 
+export type UrlStateInvalidValuesMode = 'filter' | 'default'
+
 export type UrlStateType = 'array' | 'boolean' | 'date' | 'number' | 'string'
 
 export interface UrlStateActionOptions {
@@ -84,6 +86,7 @@ export type ArrayUrlStateFieldOptions<
   Values extends Record<string, unknown> = Record<string, unknown>,
 > = UrlStateFieldOptions<'array', Value, Values> & {
   allowedValues?: readonly Value[number][]
+  invalidValues?: UrlStateInvalidValuesMode
 }
 
 export type AnyUrlStateFieldOptions<

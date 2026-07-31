@@ -213,7 +213,7 @@ the group name.
 
 `date` supports `YYYY-MM-DD` strings and valid `Date` objects. Invalid dates such as `today`, `2026-99-99`, and `2026-02-31` return `defaultValue`. Dates are written as `YYYY-MM-DD`.
 
-`array` supports arrays of strings. It reads repeated query parameters and comma-separated fallback values, such as `?tags[]=one&tags[]=two` and `?tags=one,two`. Empty arrays remove the query parameter. Objects in arrays are not supported.
+`array` supports arrays of strings. It reads repeated query parameters and comma-separated fallback values, such as `?tags[]=one&tags[]=two` and `?tags=one,two`. Empty arrays remove the query parameter. Objects in arrays are not supported. With `allowedValues`, arrays filter invalid items by default. Set `invalidValues: 'default'` to return `defaultValue` when any item is unsupported.
 
 ## patch
 
@@ -339,7 +339,20 @@ order: {
 }
 ```
 
-If the URL contains an unsupported value, reading returns `defaultValue`.
+For scalar types, if the URL contains an unsupported value, reading returns `defaultValue`.
+
+For arrays, invalid values are filtered by default because each item is independent:
+
+```js
+tags: {
+  type: 'array',
+  defaultValue: [],
+  allowedValues: ['a', 'b', 'c'],
+  invalidValues: 'filter',
+}
+```
+
+Use `invalidValues: 'default'` to make an array return `defaultValue` when any item is unsupported.
 
 ## History
 

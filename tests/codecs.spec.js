@@ -102,7 +102,42 @@ describe('codecs', () => {
     ])
     expect(parseArray('', { defaultValue: ['default'] })).toEqual(['default'])
     expect(parseArray(undefined, { defaultValue: [] })).toEqual([])
+    expect(
+      parseArray(['one', 'invalid'], {
+        defaultValue: ['default'],
+        allowedValues: ['one', 'two'],
+      }),
+    ).toEqual(['one'])
+    expect(
+      parseArray(['one', 'invalid'], {
+        defaultValue: ['default'],
+        allowedValues: ['one', 'two'],
+        invalidValues: 'default',
+      }),
+    ).toEqual(['default'])
+    expect(
+      parseArray(['invalid'], {
+        defaultValue: ['default'],
+        allowedValues: ['one', 'two'],
+      }),
+    ).toEqual(['default'])
     expect(serializeArray(['one', 'two'])).toEqual(['one', 'two'])
+    expect(
+      serializeArray(['one', 'invalid'], { allowedValues: ['one', 'two'] }),
+    ).toEqual(['one'])
+    expect(
+      serializeArray(['one', 'invalid'], {
+        allowedValues: ['one', 'two'],
+        invalidValues: 'default',
+      }),
+    ).toBeNull()
+    expect(() =>
+      parseArray(['one'], {
+        defaultValue: [],
+        allowedValues: ['one'],
+        invalidValues: 'reject',
+      }),
+    ).toThrow('Unsupported array invalidValues mode: reject')
     expect(serializeArray([])).toBeNull()
   })
 
