@@ -85,6 +85,17 @@ describe('codecs', () => {
       'one',
       'two',
     ])
+    expect(parseArray('one,two', { defaultValue: [] })).toEqual(['one', 'two'])
+    expect(parseArray(['one,two', 'three'], { defaultValue: [] })).toEqual([
+      'one',
+      'two',
+      'three',
+    ])
+    expect(parseArray('one, two,', { defaultValue: [] })).toEqual([
+      'one',
+      'two',
+    ])
+    expect(parseArray('', { defaultValue: ['default'] })).toEqual(['default'])
     expect(parseArray(undefined, { defaultValue: [] })).toEqual([])
     expect(serializeArray(['one', 'two'])).toEqual(['one', 'two'])
     expect(serializeArray([])).toBeNull()

@@ -61,6 +61,7 @@ const normalizedTags = computed(() => {
 const aliasTagsPreview = computed(
   () => `tags=${state.tags.value.join('&tags=')}`,
 )
+const commaTagsPreview = computed(() => `tags=${state.tags.value.join(',')}`)
 const hasTagQuery = computed(() => {
   return (
     Object.prototype.hasOwnProperty.call(route.query, 'tags[]') ||
@@ -84,6 +85,20 @@ function loadAliasFormat() {
       ...route.query,
       'tags[]': undefined,
       tags: state.tags.value,
+    },
+  })
+}
+
+function loadCommaFormat() {
+  if (!state.tags.value.length) {
+    return
+  }
+
+  router.replace({
+    query: {
+      ...route.query,
+      'tags[]': undefined,
+      tags: state.tags.value.join(','),
     },
   })
 }
@@ -122,8 +137,8 @@ function clearState() {
     <header class="page-header">
       <h2>Tag filters</h2>
       <p>
-        Array URL state with repeated query params, alias support, and custom
-        tags.
+        Array URL state with repeated query params, comma fallback, alias
+        support, and custom tags.
       </p>
     </header>
 
@@ -174,7 +189,10 @@ function clearState() {
         <code>tags</code>, the library reads <code>tags[]</code> and ignores the
         alias values.
       </p>
-      <p v-if="state.tags.value.length">{{ aliasTagsPreview }}</p>
+      <p v-if="state.tags.value.length">
+        {{ aliasTagsPreview }}<br />
+        {{ commaTagsPreview }}
+      </p>
 
       <p class="actions">
         <button
@@ -190,6 +208,13 @@ function clearState() {
           @click="loadAliasFormat"
         >
           Use repeated tags
+        </button>
+        <button
+          type="button"
+          :disabled="!state.tags.value.length"
+          @click="loadCommaFormat"
+        >
+          Use comma tags
         </button>
       </p>
     </section>
