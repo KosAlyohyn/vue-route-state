@@ -1,6 +1,6 @@
 {
   "name": "vue-route-state",
-  "version": "0.2.0",
+  "version": "0.3.0",
   "description": "Minimal Vue 3 composables for keeping reactive state in Vue Router query parameters.",
   "license": "MIT",
   "author": {
