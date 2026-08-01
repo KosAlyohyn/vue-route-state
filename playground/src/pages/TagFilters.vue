@@ -1,11 +1,11 @@
 <script setup>
-import { computed, ref } from 'vue'
+import { computed } from 'vue'
 import { useUrlState } from 'vue-route-state'
 import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
 const router = useRouter()
-const customTag = ref('')
+const availableTags = ['router', 'query', 'docs', 'debug']
 
 const state = useUrlState({
   tags: {
@@ -13,10 +13,20 @@ const state = useUrlState({
     key: 'tags[]',
     aliases: ['tags'],
     defaultValue: [],
+    allowedValues: availableTags,
   },
 })
 
-const availableTags = ['router', 'query', 'docs', 'debug']
+const strictState = useUrlState({
+  strictTags: {
+    type: 'array',
+    key: 'strict_tags[]',
+    aliases: ['strict_tags'],
+    defaultValue: [],
+    allowedValues: availableTags,
+    invalidValues: 'default',
+  },
+})
 
 const items = [
   {
@@ -54,18 +64,17 @@ const results = computed(() => {
 })
 
 const snapshot = computed(() => JSON.stringify(state.values.value, null, 2))
+const strictSnapshot = computed(() =>
+  JSON.stringify(strictState.values.value, null, 2),
+)
 const currentQuery = computed(() => JSON.stringify(route.query, null, 2))
-const normalizedTags = computed(() => {
-  return [...new Set([...availableTags, ...state.tags.value])].sort()
-})
 const aliasTagsPreview = computed(
   () => `tags=${state.tags.value.join('&tags=')}`,
 )
 const commaTagsPreview = computed(() => `tags=${state.tags.value.join(',')}`)
 const hasTagQuery = computed(() => {
-  return (
-    Object.prototype.hasOwnProperty.call(route.query, 'tags[]') ||
-    Object.prototype.hasOwnProperty.call(route.query, 'tags')
+  return ['tags[]', 'tags', 'strict_tags[]', 'strict_tags'].some((key) =>
+    Object.prototype.hasOwnProperty.call(route.query, key),
   )
 })
 
@@ -103,6 +112,26 @@ function loadCommaFormat() {
   })
 }
 
+function loadInvalidFilterUrl() {
+  router.replace({
+    query: {
+      ...route.query,
+      'tags[]': ['router', 'unknown'],
+      tags: undefined,
+    },
+  })
+}
+
+function loadInvalidDefaultUrl() {
+  router.replace({
+    query: {
+      ...route.query,
+      'strict_tags[]': ['router', 'unknown'],
+      strict_tags: undefined,
+    },
+  })
+}
+
 function toggleTag(tag) {
   const selectedTags = state.tags.value
 
@@ -111,24 +140,14 @@ function toggleTag(tag) {
     : [...selectedTags, tag]
 }
 
-function addTag() {
-  const tag = customTag.value.trim().toLowerCase()
-
-  if (!tag || state.tags.value.includes(tag)) {
-    customTag.value = ''
-    return
-  }
-
-  state.tags.value = [...state.tags.value, tag]
-  customTag.value = ''
-}
-
 function resetState() {
   state.reset()
+  strictState.reset()
 }
 
 function clearState() {
   state.clear()
+  strictState.clear()
 }
 </script>
 
@@ -137,49 +156,53 @@ function clearState() {
     <header class="page-header">
       <h2>Tag filters</h2>
       <p>
-        Array URL state with repeated query params, comma fallback, alias
-        support, and custom tags.
+        Array URL state with repeated query params, comma fallback, aliases,
+        allowed values, and invalid value handling.
       </p>
     </header>
 
     <form class="panel" @submit.prevent>
       <h3>Choose tags</h3>
 
-      <div>
-        <div class="tag-list">
-          <label v-for="tag in normalizedTags" :key="tag">
-            <input
-              :checked="state.tags.value.includes(tag)"
-              type="checkbox"
-              @change="toggleTag(tag)"
-            />
-            {{ tag }}
-          </label>
-        </div>
+      <div class="tag-list">
+        <label v-for="tag in availableTags" :key="tag">
+          <input
+            :checked="state.tags.value.includes(tag)"
+            type="checkbox"
+            @change="toggleTag(tag)"
+          />
+          {{ tag }}
+        </label>
       </div>
+    </form>
 
-      <label>
-        Add custom tag
-        <input
-          v-model="customTag"
-          placeholder="for example: release"
-          @keydown.enter.prevent="addTag"
-        />
-      </label>
+    <section class="panel">
+      <h3>Allowed values</h3>
+      <p>
+        The default array mode filters unsupported values and keeps supported
+        ones. The strict example uses <code>invalidValues: 'default'</code>.
+      </p>
 
       <p class="actions">
-        <button
-          type="button"
-          :disabled="
-            !customTag.trim() ||
-            state.tags.value.includes(customTag.trim().toLowerCase())
-          "
-          @click="addTag"
-        >
-          Add tag
+        <button type="button" @click="loadInvalidFilterUrl">
+          Load tags[]=router&tags[]=unknown
+        </button>
+        <button type="button" @click="loadInvalidDefaultUrl">
+          Load strict_tags[]=router&strict_tags[]=unknown
         </button>
       </p>
-    </form>
+
+      <div class="debug-grid">
+        <div>
+          <h4>filter</h4>
+          <pre>{{ snapshot }}</pre>
+        </div>
+        <div>
+          <h4>default</h4>
+          <pre>{{ strictSnapshot }}</pre>
+        </div>
+      </div>
+    </section>
 
     <section class="panel">
       <h3>Switch URL format</h3>
@@ -245,7 +268,5 @@ function clearState() {
       <h3>Current query</h3>
       <pre>{{ currentQuery }}</pre>
     </section>
-
-    <pre>{{ snapshot }}</pre>
   </section>
 </template>
