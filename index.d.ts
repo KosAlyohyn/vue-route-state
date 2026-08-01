@@ -1,5 +1,10 @@
 import type { ComputedRef, WritableComputedRef } from 'vue'
-import type { LocationQuery, RouteLocationNormalizedLoaded } from 'vue-router'
+import type {
+  LocationQuery,
+  LocationQueryValue,
+  LocationQueryValueRaw,
+  RouteLocationNormalizedLoaded,
+} from 'vue-router'
 
 export type UrlStateHistoryMode = 'replace' | 'push'
 
@@ -9,6 +14,20 @@ export type UrlStateType = 'array' | 'boolean' | 'date' | 'number' | 'string'
 
 export interface UrlStateActionOptions {
   history?: UrlStateHistoryMode
+}
+
+export interface UrlQueryParamOptions<Value = unknown> {
+  defaultValue?: Value
+  parse?: (
+    value: LocationQueryValue | LocationQueryValue[] | undefined,
+    defaultValue: Value,
+  ) => Value
+  serialize?: (
+    value: Value,
+    defaultValue: Value,
+  ) => LocationQueryValueRaw | LocationQueryValueRaw[] | undefined
+  history?: UrlStateHistoryMode
+  replace?: boolean
 }
 
 export interface UrlStateEnabledWhenContext<
@@ -149,6 +168,11 @@ export function useUrlParam<Option extends AnyUrlStateFieldOptions>(
   name: string,
   options: Option,
 ): WritableComputedRef<UrlStateFieldValue<Option>>
+
+export function useUrlQueryParam<Value = unknown>(
+  key: string,
+  options?: UrlQueryParamOptions<Value>,
+): WritableComputedRef<Value>
 
 export function useUrlState<Schema extends UrlStateSchema>(
   schema: Schema,

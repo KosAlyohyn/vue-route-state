@@ -19,7 +19,7 @@ npm install vue vue-router
 ## Public API
 
 ```js
-export { useUrlParam, useUrlState }
+export { useUrlParam, useUrlQueryParam, useUrlState }
 ```
 
 ## useUrlParam
@@ -46,6 +46,36 @@ Deleting a value removes the query parameter:
 ```js
 search.value = null
 ```
+
+## useUrlQueryParam
+
+Use `useUrlQueryParam` when a parameter needs custom parsing or serialization instead of a built-in codec:
+
+```js
+import { useUrlQueryParam } from 'vue-route-state'
+
+const payload = useUrlQueryParam('payload', {
+  defaultValue: {},
+  parse(value, defaultValue) {
+    if (!value) {
+      return defaultValue
+    }
+
+    try {
+      return JSON.parse(String(Array.isArray(value) ? value[0] : value))
+    } catch {
+      return defaultValue
+    }
+  },
+  serialize(value, defaultValue) {
+    return value === defaultValue ? null : JSON.stringify(value)
+  },
+})
+```
+
+The parser receives the raw Vue Router query value and `defaultValue`. The serializer receives the next value and `defaultValue`. Returning `undefined`, `null`, or an empty string removes the query parameter.
+
+Writes use `router.replace()` by default. Pass `history: 'push'` or `replace: false` to use `router.push()`.
 
 ## useUrlState
 
