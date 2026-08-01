@@ -49,20 +49,81 @@ search.value = null
 
 ## useUrlQueryParam
 
-Use `useUrlQueryParam` when a parameter needs custom parsing or serialization instead of a built-in codec:
+Use `useUrlQueryParam` when a parameter needs custom parsing or serialization instead of a built-in codec. It is the low-level primitive behind custom URL state wrappers: the library keeps Vue Router wiring, reactivity, query preservation, and navigation mode handling, while your code defines how the raw query value becomes application state.
+
+The parser receives the raw Vue Router query value and `defaultValue`. The serializer receives the next value and `defaultValue`. Returning `undefined`, `null`, or an empty string removes the query parameter.
+
+Writes use `router.replace()` by default. Pass `history: 'push'` or `replace: false` to use `router.push()`.
+
+### Legacy URL Values
+
+Use a custom parser when the URL format is fixed by older links or another application, but your component wants a different value shape.
 
 ```js
 import { useUrlQueryParam } from 'vue-route-state'
 
+const archived = useUrlQueryParam('archived', {
+  defaultValue: false,
+  parse(value, defaultValue) {
+    if (value == null || value === '') {
+      return defaultValue
+    }
+
+    return value === 'yes'
+  },
+  serialize(value) {
+    return value ? 'yes' : null
+  },
+})
+```
+
+This reads `?archived=yes` as `true`, treats missing values as `false`, and removes the parameter when the value is `false`.
+
+### Structured Values
+
+Use a custom serializer when one query parameter represents a small structured value.
+
+```js
+const sort = useUrlQueryParam('sort', {
+  defaultValue: { key: 'name', order: 'asc' },
+  parse(value, defaultValue) {
+    const raw = Array.isArray(value) ? value[0] : value
+    const [key, order] = String(raw || '').split(':')
+
+    if (!key || !['asc', 'desc'].includes(order)) {
+      return defaultValue
+    }
+
+    return { key, order }
+  },
+  serialize(value, defaultValue) {
+    if (value.key === defaultValue.key && value.order === defaultValue.order) {
+      return null
+    }
+
+    return value.key + ':' + value.order
+  },
+})
+```
+
+This maps `?sort=name:desc` to `{ key: 'name', order: 'desc' }`.
+
+### Compact JSON Payloads
+
+JSON can be useful for compact internal state, but prefer readable query parameters for public or shareable URLs.
+
+```js
 const payload = useUrlQueryParam('payload', {
   defaultValue: {},
   parse(value, defaultValue) {
-    if (!value) {
+    const raw = Array.isArray(value) ? value[0] : value
+
+    if (!raw) {
       return defaultValue
     }
 
     try {
-      return JSON.parse(String(Array.isArray(value) ? value[0] : value))
+      return JSON.parse(String(raw))
     } catch {
       return defaultValue
     }
@@ -72,10 +133,6 @@ const payload = useUrlQueryParam('payload', {
   },
 })
 ```
-
-The parser receives the raw Vue Router query value and `defaultValue`. The serializer receives the next value and `defaultValue`. Returning `undefined`, `null`, or an empty string removes the query parameter.
-
-Writes use `router.replace()` by default. Pass `history: 'push'` or `replace: false` to use `router.push()`.
 
 ## useUrlState
 
