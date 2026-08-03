@@ -170,6 +170,17 @@ const state = useUrlState({
     defaultValue: 'newest',
     allowedValues: ['newest', 'oldest'],
   },
+  sort: {
+    type: 'custom',
+    defaultValue: { key: 'name', order: 'asc' },
+    parse(raw, field) {
+      const [key, order] = String(raw || '').split(':')
+      return key && order ? { key, order } : field.defaultValue
+    },
+    serialize(value) {
+      return value.key + ':' + value.order
+    },
+  },
 })
 
 state.search.value = 'hello'
@@ -193,6 +204,8 @@ Supported field options:
   integer,
   omitDefault,
   enabledWhen,
+  parse,
+  serialize,
 }
 ```
 
@@ -299,6 +312,8 @@ the group name.
 `boolean` reads `true`, `false`, `1`, and `0`. It writes canonical values as `true` and `false` by default. Set `trueValue` and `falseValue` on a boolean field to write custom canonical values, such as `1` and `0`. `false` is a valid value.
 
 `date` supports `YYYY-MM-DD` strings and valid `Date` objects. Invalid dates such as `today`, `2026-99-99`, and `2026-02-31` return `defaultValue`. Dates are written as `YYYY-MM-DD`.
+
+`custom` delegates parsing and serialization to field-level `parse(raw, field)` and `serialize(value, field)` functions. Use it when a field needs to store structured values or a URL format that built-in codecs do not cover. Returning `undefined`, `null`, or an empty string from `serialize` removes the query parameter.
 
 `array` supports arrays of strings. It reads repeated query parameters and comma-separated fallback values, such as `?tags[]=one&tags[]=two` and `?tags=one,two`. Empty arrays remove the query parameter. Objects in arrays are not supported. With `allowedValues`, arrays filter invalid items by default. Set `invalidValues: 'default'` to return `defaultValue` when any item is unsupported.
 

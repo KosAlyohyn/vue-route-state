@@ -10,7 +10,13 @@ export type UrlStateHistoryMode = 'replace' | 'push'
 
 export type UrlStateInvalidValuesMode = 'filter' | 'default'
 
-export type UrlStateType = 'array' | 'boolean' | 'date' | 'number' | 'string'
+export type UrlStateType =
+  | 'array'
+  | 'boolean'
+  | 'custom'
+  | 'date'
+  | 'number'
+  | 'string'
 
 export interface UrlStateActionOptions {
   history?: UrlStateHistoryMode
@@ -93,6 +99,20 @@ export type BooleanUrlStateFieldOptions<
   falseValue?: string
 }
 
+export interface CustomUrlStateFieldOptions<
+  Value = unknown,
+  Values extends Record<string, unknown> = Record<string, unknown>,
+> extends UrlStateFieldOptions<'custom', Value, Values> {
+  parse: (
+    value: LocationQueryValue | LocationQueryValue[] | undefined,
+    field: CustomUrlStateFieldOptions<Value, Values>,
+  ) => Value
+  serialize: (
+    value: Value,
+    field: CustomUrlStateFieldOptions<Value, Values>,
+  ) => LocationQueryValueRaw | LocationQueryValueRaw[] | undefined
+}
+
 export type DateUrlStateValue = string | Date | null
 
 export type DateUrlStateFieldOptions<
@@ -114,6 +134,7 @@ export type AnyUrlStateFieldOptions<
   | StringUrlStateFieldOptions<string, Values>
   | NumberUrlStateFieldOptions<number, Values>
   | BooleanUrlStateFieldOptions<boolean, Values>
+  | CustomUrlStateFieldOptions<unknown, Values>
   | DateUrlStateFieldOptions<DateUrlStateValue, Values>
   | ArrayUrlStateFieldOptions<readonly string[], Values>
 
@@ -134,6 +155,8 @@ export type UrlStateFieldValue<Option> =
       : Value
     : Option extends UrlStateFieldOptions<'date', unknown>
       ? DateUrlStateValue
+      : Option extends CustomUrlStateFieldOptions<infer Value>
+        ? Value
       : Option extends UrlStateFieldOptions<UrlStateType, infer Value>
         ? Value
         : unknown
