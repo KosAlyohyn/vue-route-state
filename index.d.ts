@@ -4,6 +4,7 @@ import type {
   LocationQueryValue,
   LocationQueryValueRaw,
   RouteLocationNormalizedLoaded,
+  Router,
 } from 'vue-router'
 
 export type UrlStateHistoryMode = 'replace' | 'push'
@@ -147,6 +148,8 @@ export type UrlStateSchema<
 > = Record<string, AnyUrlStateFieldOptions<Values>>
 
 export interface UrlStateOptions<Schema extends UrlStateSchema> {
+  route?: RouteLocationNormalizedLoaded
+  router?: Router
   history?: UrlStateHistoryMode
   order?: readonly (keyof Schema & string)[]
   groups?: Record<string, UrlStateGroupOptions<Schema>>
