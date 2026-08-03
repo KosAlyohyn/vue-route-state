@@ -1,6 +1,6 @@
 <script setup>
 import { computed } from 'vue'
-import { useUrlQueryParam } from 'vue-route-state'
+import { useUrlQueryParam, useUrlState } from 'vue-route-state'
 import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
@@ -79,8 +79,36 @@ const payload = useUrlQueryParam('payload', {
   },
 })
 
+const schemaState = useUrlState({
+  schemaSearch: {
+    type: 'string',
+    key: 'schema_search',
+    defaultValue: '',
+    transform(value) {
+      return String(value).trim()
+    },
+  },
+  schemaSort: {
+    type: 'custom',
+    key: 'schema_sort',
+    defaultValue: { key: 'name', order: 'asc' },
+    parse(raw, field) {
+      const [key, order] = String(raw || '').split(':')
+
+      if (!sortKeys.includes(key) || !sortOrders.includes(order)) {
+        return field.defaultValue
+      }
+
+      return { key, order }
+    },
+    serialize(value) {
+      return value.key + ':' + value.order
+    },
+  },
+})
+
 const currentQuery = computed(() => JSON.stringify(route.query, null, 2))
-const snapshot = computed(() =>
+const lowLevelSnapshot = computed(() =>
   JSON.stringify(
     {
       archived: archived.value,
@@ -91,10 +119,17 @@ const snapshot = computed(() =>
     2,
   ),
 )
+const schemaSnapshot = computed(() =>
+  JSON.stringify(schemaState.values.value, null, 2),
+)
 const hasManagedQuery = computed(() => {
-  return ['archived', 'sort', 'payload'].some((key) =>
-    Object.prototype.hasOwnProperty.call(route.query, key),
-  )
+  return [
+    'archived',
+    'sort',
+    'payload',
+    'schema_search',
+    'schema_sort',
+  ].some((key) => Object.prototype.hasOwnProperty.call(route.query, key))
 })
 
 function setSortKey(key) {
@@ -112,6 +147,14 @@ function setPageSize(pageSize) {
   }
 }
 
+function setSchemaSortKey(key) {
+  schemaState.schemaSort.value = { ...schemaState.schemaSort.value, key }
+}
+
+function setSchemaSortOrder(order) {
+  schemaState.schemaSort.value = { ...schemaState.schemaSort.value, order }
+}
+
 function toggleCompact() {
   payload.value = {
     ...payload.value,
@@ -125,6 +168,8 @@ function loadLegacyValues() {
       ...route.query,
       archived: 'yes',
       sort: 'status:desc',
+      schema_search: '  router  ',
+      schema_sort: 'created_at:desc',
     },
   })
 }
@@ -136,6 +181,8 @@ function loadMalformedValues() {
       archived: 'maybe',
       sort: 'broken:value',
       payload: '{bad-json',
+      schema_search: '   ',
+      schema_sort: 'broken:value',
     },
   })
 }
@@ -144,6 +191,7 @@ function resetState() {
   archived.value = false
   sort.value = { key: 'name', order: 'asc' }
   payload.value = { pageSize: 20, compact: false }
+  schemaState.reset()
 }
 
 function clearState() {
@@ -153,6 +201,8 @@ function clearState() {
       archived: undefined,
       sort: undefined,
       payload: undefined,
+      schema_search: undefined,
+      schema_sort: undefined,
     },
   })
 }
@@ -163,8 +213,8 @@ function clearState() {
     <header class="page-header">
       <h2>Custom params</h2>
       <p>
-        Low-level URL state with custom parse and serialize functions for
-        legacy values, structured values, and compact payloads.
+        Low-level custom query params and schema-based custom fields with
+        value transforms.
       </p>
     </header>
 
@@ -228,10 +278,47 @@ function clearState() {
     </section>
 
     <section class="panel">
+      <h3>Schema custom field</h3>
+      <div class="grid">
+        <label>
+          Search with transform
+          <input
+            v-model="schemaState.schemaSearch.value"
+            placeholder="Whitespace is trimmed"
+          />
+        </label>
+
+        <label>
+          Sort key
+          <select
+            :value="schemaState.schemaSort.value.key"
+            @change="setSchemaSortKey($event.target.value)"
+          >
+            <option v-for="key in sortKeys" :key="key" :value="key">
+              {{ key }}
+            </option>
+          </select>
+        </label>
+
+        <label>
+          Sort order
+          <select
+            :value="schemaState.schemaSort.value.order"
+            @change="setSchemaSortOrder($event.target.value)"
+          >
+            <option v-for="order in sortOrders" :key="order" :value="order">
+              {{ order }}
+            </option>
+          </select>
+        </label>
+      </div>
+    </section>
+
+    <section class="panel">
       <h3>URL actions</h3>
       <p class="actions">
         <button type="button" @click="loadLegacyValues">
-          Load archived=yes&sort=status:desc
+          Load valid custom values
         </button>
         <button type="button" @click="loadMalformedValues">
           Load malformed values
@@ -255,7 +342,16 @@ function clearState() {
 
     <section class="panel">
       <h3>Parsed state</h3>
-      <pre>{{ snapshot }}</pre>
+      <div class="debug-grid">
+        <div>
+          <h4>query param</h4>
+          <pre>{{ lowLevelSnapshot }}</pre>
+        </div>
+        <div>
+          <h4>schema</h4>
+          <pre>{{ schemaSnapshot }}</pre>
+        </div>
+      </div>
     </section>
 
     <section class="panel">
