@@ -1,5 +1,6 @@
 import { parseArray, serializeArray } from './array.js'
 import { parseBoolean, serializeBoolean } from './boolean.js'
+import { parseCustom, serializeCustom } from './custom.js'
 import { parseDate, serializeDate } from './date.js'
 import { parseNumber, serializeNumber } from './number.js'
 import { parseString, serializeString } from './string.js'
@@ -12,6 +13,10 @@ const codecs = {
   boolean: {
     parse: parseBoolean,
     serialize: serializeBoolean,
+  },
+  custom: {
+    parse: parseCustom,
+    serialize: serializeCustom,
   },
   date: {
     parse: parseDate,

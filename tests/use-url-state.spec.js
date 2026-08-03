@@ -56,6 +56,35 @@ describe('useUrlState', () => {
     expect(state.order.value).toBe('newest')
   })
 
+  it('supports custom fields', async () => {
+    const { router, run } = await createHarness('/?sort=status:desc')
+    const state = run(() =>
+      useUrlState({
+        sort: {
+          type: 'custom',
+          defaultValue: { key: 'name', order: 'asc' },
+          parse(raw, field) {
+            const [key, order] = String(raw || '').split(':')
+
+            return key && order ? { key, order } : field.defaultValue
+          },
+          serialize(value) {
+            return value.key + ':' + value.order
+          },
+        },
+      }),
+    )
+
+    expect(state.sort.value).toEqual({ key: 'status', order: 'desc' })
+
+    state.sort.value = { key: 'created_at', order: 'asc' }
+    await flushRouter()
+
+    expect(router.currentRoute.value.query).toEqual({
+      sort: 'created_at:asc',
+    })
+  })
+
   it('supports date fields', async () => {
     const { router, run } = await createHarness('/?period_start=2026-07-28')
     const state = run(() =>

@@ -2,6 +2,7 @@ import { describe, expect, it } from 'vitest'
 
 import { parseArray, serializeArray } from '../src/codecs/array.js'
 import { parseBoolean, serializeBoolean } from '../src/codecs/boolean.js'
+import { parseCustom, serializeCustom } from '../src/codecs/custom.js'
 import { parseDate, serializeDate } from '../src/codecs/date.js'
 import { getCodec } from '../src/codecs/index.js'
 import { parseNumber, serializeNumber } from '../src/codecs/number.js'
@@ -139,6 +140,38 @@ describe('codecs', () => {
       }),
     ).toThrow('Unsupported array invalidValues mode: reject')
     expect(serializeArray([])).toBeNull()
+  })
+
+  it('reads and writes custom values', () => {
+    const field = {
+      defaultValue: { key: 'name', order: 'asc' },
+      parse(raw, fieldConfig) {
+        const [key, order] = String(raw || '').split(':')
+
+        return key && order ? { key, order } : fieldConfig.defaultValue
+      },
+      serialize(value) {
+        return `${value.key}:${value.order}`
+      },
+    }
+
+    expect(parseCustom('status:desc', field)).toEqual({
+      key: 'status',
+      order: 'desc',
+    })
+    expect(parseCustom(undefined, field)).toEqual({ key: 'name', order: 'asc' })
+    expect(serializeCustom({ key: 'created_at', order: 'asc' }, field)).toBe(
+      'created_at:asc',
+    )
+  })
+
+  it('requires custom parse and serialize functions', () => {
+    expect(() => parseCustom('value', {})).toThrow(
+      'Custom URL state fields require a parse function',
+    )
+    expect(() => serializeCustom('value', {})).toThrow(
+      'Custom URL state fields require a serialize function',
+    )
   })
 
   it('throws for unknown types', () => {
