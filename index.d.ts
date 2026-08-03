@@ -23,6 +23,11 @@ export interface UrlStateActionOptions {
   history?: UrlStateHistoryMode
 }
 
+export interface UrlRouterContextOptions {
+  route?: RouteLocationNormalizedLoaded
+  router?: Router
+}
+
 export interface UrlQueryParamOptions<Value = unknown> {
   defaultValue?: Value
   parse?: (
@@ -147,9 +152,8 @@ export type UrlStateSchema<
   Values extends Record<string, unknown> = Record<string, unknown>,
 > = Record<string, AnyUrlStateFieldOptions<Values>>
 
-export interface UrlStateOptions<Schema extends UrlStateSchema> {
-  route?: RouteLocationNormalizedLoaded
-  router?: Router
+export interface UrlStateOptions<Schema extends UrlStateSchema>
+  extends UrlRouterContextOptions {
   history?: UrlStateHistoryMode
   order?: readonly (keyof Schema & string)[]
   groups?: Record<string, UrlStateGroupOptions<Schema>>
@@ -196,7 +200,7 @@ export type UrlState<Schema extends UrlStateSchema> = UrlStateRefs<Schema> & {
 
 export function useUrlParam<Option extends AnyUrlStateFieldOptions>(
   name: string,
-  options: Option,
+  options: Option & UrlRouterContextOptions,
 ): WritableComputedRef<UrlStateFieldValue<Option>>
 
 export function useUrlQueryParam<Value = unknown>(
