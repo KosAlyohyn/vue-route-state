@@ -1,6 +1,7 @@
 import { createRouter, createWebHistory } from 'vue-router'
 
 import BooleanFilters from './pages/BooleanFilters.vue'
+import CustomParams from './pages/CustomParams.vue'
 import DateFilters from './pages/DateFilters.vue'
 import Groups from './pages/Groups.vue'
 import LegacyUrls from './pages/LegacyUrls.vue'
@@ -38,6 +39,11 @@ export const router = createRouter({
       path: '/groups',
       name: 'groups',
       component: Groups,
+    },
+    {
+      path: '/custom',
+      name: 'custom',
+      component: CustomParams,
     },
     {
       path: '/legacy',
