@@ -224,6 +224,19 @@ search: {
 }
 ```
 
+## Explicit Router Context
+
+`useUrlState` reads Vue Router from app context by default. Pass both `route` and `router` when building wrappers or tests that already have an explicit router context:
+
+```js
+const state = useUrlState(schema, {
+  route,
+  router,
+})
+```
+
+Both values are required. Passing only `route` or only `router` throws an error.
+
 ## Conditional fields
 
 `enabledWhen` and the `order` option apply to `useUrlState()`.

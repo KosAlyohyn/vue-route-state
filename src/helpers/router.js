@@ -1,9 +1,27 @@
 import { useRoute, useRouter } from 'vue-router'
 
 export function useRouterContext() {
-  const route = useRoute()
-  const router = useRouter()
+  return assertRouterContext(useRoute(), useRouter())
+}
 
+export function resolveRouterContext(options = {}) {
+  const hasRoute = Object.prototype.hasOwnProperty.call(options, 'route')
+  const hasRouter = Object.prototype.hasOwnProperty.call(options, 'router')
+
+  if (hasRoute || hasRouter) {
+    if (!hasRoute || !hasRouter) {
+      throw new Error(
+        'vue-route-state requires both route and router when using explicit router context.',
+      )
+    }
+
+    return assertRouterContext(options.route, options.router)
+  }
+
+  return useRouterContext()
+}
+
+function assertRouterContext(route, router) {
   if (!route || !router) {
     throw new Error(
       'vue-route-state requires Vue Router. Install Vue Router before calling URL state composables.',

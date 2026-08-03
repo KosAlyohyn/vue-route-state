@@ -479,6 +479,30 @@ describe('useUrlState', () => {
     ).toThrow('Unknown URL state group field: missing')
   })
 
+  it('supports explicit router context', async () => {
+    const { router } = await createHarness('/?page=2')
+    const state = useUrlState(schema(), {
+      route: router.currentRoute.value,
+      router,
+    })
+
+    expect(state.page.value).toBe(2)
+
+    await state.patch({ page: 3 })
+
+    expect(router.currentRoute.value.query).toEqual({ page: '3' })
+  })
+
+  it('requires both route and router for explicit router context', () => {
+    expect(() =>
+      useUrlState(schema(), {
+        route: {},
+      }),
+    ).toThrow(
+      'vue-route-state requires both route and router when using explicit router context.',
+    )
+  })
+
   it('reacts to browser back and forward navigation', async () => {
     const { router, run } = await createHarness('/?page=1')
     const state = run(() => useUrlState(schema(), { history: 'push' }))

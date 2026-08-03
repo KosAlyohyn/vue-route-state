@@ -9,7 +9,7 @@ import { normalizeGroups } from '../core/groups.js'
 import { resolveValues } from '../core/resolve-values.js'
 import { createQueryUpdater } from '../core/update-query.js'
 import { cloneQuery, deleteFieldKeys } from '../helpers/query.js'
-import { useRouterContext } from '../helpers/router.js'
+import { resolveRouterContext } from '../helpers/router.js'
 import {
   assertKnownFields,
   normalizeSchema,
@@ -17,7 +17,7 @@ import {
 } from '../helpers/schema.js'
 
 export function useUrlState(schema, options = {}) {
-  const { route, router } = useRouterContext()
+  const { route, router } = resolveRouterContext(options)
   const fields = normalizeSchema(schema)
   const orderedFields = orderFields(fields, options.order)
   const groups = normalizeGroups(fields, options.groups)
