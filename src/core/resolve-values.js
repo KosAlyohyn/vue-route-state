@@ -1,4 +1,4 @@
-import { readFieldValue } from './create-field.js'
+import { readFieldValue, transformFieldValue } from './create-field.js'
 import { areGroupsEnabled, groupsForField } from './groups.js'
 
 export function resolveValues(
@@ -20,7 +20,7 @@ export function resolveValues(
     }
     const value = isFieldEnabled(field, context, groupsForField(groups, name))
       ? readFieldValue(query, field)
-      : field.defaultValue
+      : transformFieldValue(field, field.defaultValue)
 
     values[name] = cloneValue(value)
   }

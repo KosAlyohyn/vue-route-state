@@ -204,12 +204,25 @@ Supported field options:
   integer,
   omitDefault,
   enabledWhen,
+  transform,
   parse,
   serialize,
 }
 ```
 
 `key` defaults to the schema field name. `omitDefault` defaults to `true`, so assigning the default value removes the parameter from the URL. Set `omitDefault: false` to write default values explicitly.
+
+Use `transform(value, field)` to normalize values after parsing and before serialization:
+
+```js
+search: {
+  type: 'string',
+  defaultValue: '',
+  transform(value) {
+    return String(value).trim()
+  },
+}
+```
 
 ## Conditional fields
 
