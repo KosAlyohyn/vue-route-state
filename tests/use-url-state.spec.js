@@ -56,6 +56,31 @@ describe('useUrlState', () => {
     expect(state.order.value).toBe('newest')
   })
 
+  it('transforms values after parsing and before serialization', async () => {
+    const { router, run } = await createHarness('/?search=%20hello%20')
+    const state = run(() =>
+      useUrlState({
+        search: {
+          type: 'string',
+          defaultValue: '',
+          transform(value) {
+            return String(value).trim()
+          },
+        },
+      }),
+    )
+
+    expect(state.search.value).toBe('hello')
+
+    state.search.value = '  world  '
+    await flushRouter()
+    expect(router.currentRoute.value.query).toEqual({ search: 'world' })
+
+    state.search.value = '   '
+    await flushRouter()
+    expect(router.currentRoute.value.query).toEqual({})
+  })
+
   it('supports custom fields', async () => {
     const { router, run } = await createHarness('/?sort=status:desc')
     const state = run(() =>

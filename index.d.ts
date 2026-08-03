@@ -73,6 +73,10 @@ export interface UrlStateFieldOptions<
   positive?: boolean
   omitDefault?: boolean
   enabledWhen?: (context: UrlStateEnabledWhenContext<Values>) => boolean
+  transform?: (
+    value: Value,
+    field: UrlStateFieldOptions<Type, Value, Values>,
+  ) => Value
 }
 
 export type StringUrlStateFieldOptions<

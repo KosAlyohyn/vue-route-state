@@ -11,7 +11,7 @@ export function readFieldValue(query, field) {
   const codec = getCodec(field.type)
   const raw = readRawValue(query, field)
 
-  return codec.parse(raw, field)
+  return transformFieldValue(field, codec.parse(raw, field))
 }
 
 export function hasFieldQueryValue(route, field) {
@@ -26,17 +26,32 @@ export function serializeFieldValue(field, value) {
   }
 
   const codec = getCodec(field.type)
-  const serialized = codec.serialize(value, field)
+  const transformed = transformFieldValue(field, value)
+
+  if (transformed == null) {
+    return null
+  }
+
+  const serialized = codec.serialize(transformed, field)
 
   if (serialized == null) {
     return null
   }
 
-  if (field.omitDefault && valueEquals(value, field.defaultValue)) {
+  if (
+    field.omitDefault &&
+    valueEquals(transformed, transformFieldValue(field, field.defaultValue))
+  ) {
     return null
   }
 
   return serialized
+}
+
+export function transformFieldValue(field, value) {
+  return typeof field.transform === 'function'
+    ? field.transform(value, field)
+    : value
 }
 
 export function createField(route, updateQuery, field, resolveValue) {
