@@ -2,7 +2,7 @@ import { computed } from 'vue'
 
 import { queryEquals } from '../helpers/equality.js'
 import { cloneQuery } from '../helpers/query.js'
-import { useRouterContext } from '../helpers/router.js'
+import { resolveRouterContext } from '../helpers/router.js'
 
 export function useUrlQueryParam(key, options = {}) {
   const {
@@ -10,7 +10,7 @@ export function useUrlQueryParam(key, options = {}) {
     parse = parseDefault,
     serialize = serializeDefault,
   } = options
-  const { route, router } = useRouterContext()
+  const { route, router } = resolveRouterContext(options)
   const history = normalizeHistory(options)
 
   return computed({

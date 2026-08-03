@@ -66,6 +66,18 @@ The parser receives the raw Vue Router query value and `defaultValue`. The seria
 
 Writes use `router.replace()` by default. Pass `history: 'push'` or `replace: false` to use `router.push()`.
 
+Pass both `route` and `router` when a wrapper or test already has an explicit router context:
+
+```js
+const payload = useUrlQueryParam('payload', {
+  defaultValue: {},
+  parse() {},
+  serialize() {},
+  route,
+  router,
+})
+```
+
 ### Legacy URL Values
 
 Use a custom parser when the URL format is fixed by older links or another application, but your component wants a different value shape.

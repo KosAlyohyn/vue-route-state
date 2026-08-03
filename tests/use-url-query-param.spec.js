@@ -66,6 +66,40 @@ describe('useUrlQueryParam', () => {
     })
   })
 
+  it('supports explicit router context', async () => {
+    const { router } = await createHarness('/?page=2')
+    const page = useUrlQueryParam('page', {
+      defaultValue: 1,
+      route: router.currentRoute.value,
+      router,
+      parse(value, defaultValue) {
+        const parsed = Number(Array.isArray(value) ? value[0] : value)
+        return Number.isFinite(parsed) ? parsed : defaultValue
+      },
+      serialize(value) {
+        return String(value)
+      },
+    })
+
+    expect(page.value).toBe(2)
+
+    page.value = 3
+    await flushRouter()
+
+    expect(router.currentRoute.value.query).toEqual({ page: '3' })
+  })
+
+  it('requires both route and router for explicit router context', () => {
+    expect(() =>
+      useUrlQueryParam('search', {
+        defaultValue: '',
+        route: {},
+      }),
+    ).toThrow(
+      'vue-route-state requires both route and router when using explicit router context.',
+    )
+  })
+
   it('supports replace false as a push shortcut', async () => {
     const { router, run } = await createHarness('/')
     const search = run(() =>

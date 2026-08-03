@@ -28,7 +28,8 @@ export interface UrlRouterContextOptions {
   router?: Router
 }
 
-export interface UrlQueryParamOptions<Value = unknown> {
+export interface UrlQueryParamOptions<Value = unknown>
+  extends UrlRouterContextOptions {
   defaultValue?: Value
   parse?: (
     value: LocationQueryValue | LocationQueryValue[] | undefined,
