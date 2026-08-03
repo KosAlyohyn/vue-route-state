@@ -47,6 +47,17 @@ Deleting a value removes the query parameter:
 search.value = null
 ```
 
+Pass both `route` and `router` when a wrapper or test already has an explicit router context:
+
+```js
+const search = useUrlParam('search', {
+  type: 'string',
+  defaultValue: '',
+  route,
+  router,
+})
+```
+
 ## useUrlQueryParam
 
 Use `useUrlQueryParam` when a parameter needs custom parsing or serialization instead of a built-in codec. It is the low-level primitive behind custom URL state wrappers: the library keeps Vue Router wiring, reactivity, query preservation, and navigation mode handling, while your code defines how the raw query value becomes application state.
