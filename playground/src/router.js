@@ -3,6 +3,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import BooleanFilters from './pages/BooleanFilters.vue'
 import CustomParams from './pages/CustomParams.vue'
 import DateFilters from './pages/DateFilters.vue'
+import Docs from './pages/Docs.vue'
 import Groups from './pages/Groups.vue'
 import LegacyUrls from './pages/LegacyUrls.vue'
 import SearchFilters from './pages/SearchFilters.vue'
@@ -13,7 +14,12 @@ export const router = createRouter({
   routes: [
     {
       path: '/',
-      redirect: '/search',
+      redirect: '/docs',
+    },
+    {
+      path: '/docs',
+      name: 'docs',
+      component: Docs,
     },
     {
       path: '/search',
