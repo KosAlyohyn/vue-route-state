@@ -177,6 +177,10 @@ export type UrlStateValues<Schema extends UrlStateSchema> = {
   [Name in keyof Schema]: UrlStateFieldValue<Schema[Name]>
 }
 
+export type UrlStateFieldNames<Schema extends UrlStateSchema> =
+  | (keyof Schema & string)
+  | readonly (keyof Schema & string)[]
+
 export type UrlStateRefs<Schema extends UrlStateSchema> = {
   [Name in keyof Schema]: WritableComputedRef<UrlStateFieldValue<Schema[Name]>>
 }
@@ -187,11 +191,11 @@ export type UrlState<Schema extends UrlStateSchema> = UrlStateRefs<Schema> & {
     options?: UrlStateActionOptions,
   ): Promise<unknown>
   clear(
-    names?: readonly (keyof Schema & string)[],
+    names?: UrlStateFieldNames<Schema>,
     options?: UrlStateActionOptions,
   ): Promise<unknown>
   reset(
-    names?: readonly (keyof Schema & string)[],
+    names?: UrlStateFieldNames<Schema>,
     options?: UrlStateActionOptions,
   ): Promise<unknown>
   hasQueryValue(name: keyof Schema & string): boolean

@@ -248,11 +248,18 @@ describe('useUrlState', () => {
     )
     const state = run(() => useUrlState(schema()))
 
-    await state.clear(['search', 'page'])
+    await state.clear('search')
     expect(router.currentRoute.value.query).toEqual({
       enabled: 'true',
       external: 'value',
       order: 'oldest',
+      page: '2',
+    })
+
+    await state.clear(['page', 'order'])
+    expect(router.currentRoute.value.query).toEqual({
+      enabled: 'true',
+      external: 'value',
     })
 
     await state.clear()
@@ -277,13 +284,20 @@ describe('useUrlState', () => {
       }),
     )
 
-    await state.reset(['order'])
+    await state.reset('order')
     expect(router.currentRoute.value.query).toEqual({
       enabled: 'true',
       external: 'value',
       order: 'newest',
       page: '2',
       search: 'hello',
+    })
+
+    await state.reset(['search', 'page'])
+    expect(router.currentRoute.value.query).toEqual({
+      enabled: 'true',
+      external: 'value',
+      order: 'newest',
     })
 
     await state.reset()

@@ -406,10 +406,11 @@ For connected updates, prefer `patch()`.
 ## clear
 
 ```js
+await state.clear('search')
 await state.clear(['search', 'page'])
 ```
 
-This removes only the selected managed parameters. Without arguments, it removes all parameters managed by the schema:
+This removes only the selected managed parameters. Pass one field name or an array of field names. Without arguments, it removes all parameters managed by the schema:
 
 ```js
 await state.clear()
@@ -421,10 +422,11 @@ Unmanaged query parameters are preserved.
 
 ```js
 await state.reset()
+await state.reset('page')
 await state.reset(['page', 'order'])
 ```
 
-`reset()` assigns `defaultValue` for selected fields. Normal serialization rules still apply, including `omitDefault`.
+`reset()` accepts one field name, an array of field names, or no argument for all fields. It assigns `defaultValue` for selected fields. Normal serialization rules still apply, including `omitDefault`.
 
 ## snapshot and values
 
@@ -534,11 +536,11 @@ Query writes preserve the current route target. Named routes keep their `name`,
 navigation:
 
 ```js
-await state.clear(['search'], {
+await state.clear('search', {
   history: 'push',
 })
 
-await state.reset(['page'], {
+await state.reset('page', {
   history: 'replace',
 })
 ```
