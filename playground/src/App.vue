@@ -1,5 +1,6 @@
 <script setup>
 const links = [
+  { to: '/docs', label: 'Docs' },
   { to: '/search', label: 'Search filters' },
   { to: '/boolean', label: 'Boolean filters' },
   { to: '/date', label: 'Date filters' },
