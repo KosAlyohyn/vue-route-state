@@ -40,7 +40,7 @@ export function useUrlState(schema, options = {}) {
   }
 
   state.clear = async (names, actionOptions) => {
-    const selected = names ?? Object.keys(fields)
+    const selected = normalizeFieldNames(names, fields)
     assertKnownFields(
       fields,
       Object.fromEntries(selected.map((name) => [name, null])),
@@ -53,7 +53,7 @@ export function useUrlState(schema, options = {}) {
   }
 
   state.reset = async (names, actionOptions) => {
-    const selected = names ?? Object.keys(fields)
+    const selected = normalizeFieldNames(names, fields)
     assertKnownFields(
       fields,
       Object.fromEntries(selected.map((name) => [name, null])),
@@ -81,6 +81,14 @@ export function useUrlState(schema, options = {}) {
 
 function snapshot(route, fields, orderedFields, groups) {
   return resolveValues(route, fields, orderedFields, route.query, groups)
+}
+
+function normalizeFieldNames(names, fields) {
+  if (names == null) {
+    return Object.keys(fields)
+  }
+
+  return Array.isArray(names) ? names : [names]
 }
 
 export function serializeManagedDefaults(route, fields) {
