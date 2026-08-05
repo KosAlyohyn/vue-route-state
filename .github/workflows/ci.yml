@@ -35,7 +35,7 @@ jobs:
         run: npm run build
 
       - name: Check npm package contents
-        run: npm pack --dry-run
+        run: npm run package:check
 
       - name: Install playground dependencies
         run: npm ci --prefix playground

@@ -47,7 +47,8 @@
     "dist",
     "index.d.ts",
     "README.md",
-    "CHANGELOG.md"
+    "CHANGELOG.md",
+    "MIGRATION.md"
   ],
   "publishConfig": {
     "access": "public"
@@ -59,7 +60,7 @@
     "test": "vitest run",
     "test:watch": "vitest",
     "build": "vite build",
-    "prepublishOnly": "npm run lint && npm run test && npm run build",
+    "prepublishOnly": "npm run lint && npm run test && npm run build && npm run package:check",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier . --write",
@@ -69,7 +70,8 @@
     "playground:preview": "npm --prefix playground run preview",
     "docs:dev": "npm run playground:dev",
     "docs:build": "npm run playground:build",
-    "docs:preview": "npm run playground:preview"
+    "docs:preview": "npm run playground:preview",
+    "package:check": "npm pack --dry-run"
   },
   "peerDependencies": {
     "vue": "^3.4.0",

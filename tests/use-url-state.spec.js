@@ -160,11 +160,11 @@ describe('useUrlState', () => {
 
   it('preserves named route params and hash during query navigation', async () => {
     const { router, run } = await createHarness(
-      '/cases/case-42?modal=case-info#activity',
+      '/items/item-42?panel=summary#activity',
       [
         {
-          path: '/cases/:slug',
-          name: 'case',
+          path: '/items/:slug',
+          name: 'item',
           component: {},
         },
       ],
@@ -175,27 +175,27 @@ describe('useUrlState', () => {
     await state.patch({ search: 'hello' })
 
     expect(replace).toHaveBeenCalledWith({
-      name: 'case',
+      name: 'item',
       params: {
-        slug: 'case-42',
+        slug: 'item-42',
       },
       query: {
-        modal: 'case-info',
+        panel: 'summary',
         search: 'hello',
       },
       hash: '#activity',
     })
     expect(router.currentRoute.value.fullPath).toBe(
-      '/cases/case-42?modal=case-info&search=hello#activity',
+      '/items/item-42?panel=summary&search=hello#activity',
     )
   })
 
   it('preserves path and hash for unnamed routes', async () => {
     const { router, run } = await createHarness(
-      '/countries/ua?modal=details#overview',
+      '/profiles/user-1?panel=details#overview',
       [
         {
-          path: '/countries/:code',
+          path: '/profiles/:id',
           component: {},
         },
       ],
@@ -206,15 +206,15 @@ describe('useUrlState', () => {
     await state.patch({ page: 2 })
 
     expect(replace).toHaveBeenCalledWith({
-      path: '/countries/ua',
+      path: '/profiles/user-1',
       query: {
-        modal: 'details',
+        panel: 'details',
         page: '2',
       },
       hash: '#overview',
     })
     expect(router.currentRoute.value.fullPath).toBe(
-      '/countries/ua?modal=details&page=2#overview',
+      '/profiles/user-1?panel=details&page=2#overview',
     )
   })
 
@@ -406,18 +406,18 @@ describe('useUrlState', () => {
 
   it('supports conditionally enabled field groups', async () => {
     const { router, run } = await createHarness(
-      '/?modal=property_owners&owner_type=company&page=2&external=value',
+      '/?view=details&detail_type=summary&page=2&external=value',
     )
     const state = run(() =>
       useUrlState(
         {
-          modal: {
+          view: {
             type: 'string',
             defaultValue: null,
           },
-          ownerType: {
+          detailType: {
             type: 'string',
-            key: 'owner_type',
+            key: 'detail_type',
             defaultValue: 'all',
           },
           page: {
@@ -427,44 +427,44 @@ describe('useUrlState', () => {
           },
         },
         {
-          order: ['modal', 'ownerType', 'page'],
+          order: ['view', 'detailType', 'page'],
           groups: {
-            propertyOwners: {
-              fields: ['ownerType', 'page'],
-              enabledWhen: ({ values }) => values.modal === 'property_owners',
+            details: {
+              fields: ['detailType', 'page'],
+              enabledWhen: ({ values }) => values.view === 'details',
             },
           },
         },
       ),
     )
 
-    expect(state.ownerType.value).toBe('company')
+    expect(state.detailType.value).toBe('summary')
     expect(state.page.value).toBe(2)
 
-    await state.patch({ modal: null })
+    await state.patch({ view: null })
 
-    expect(state.ownerType.value).toBe('all')
+    expect(state.detailType.value).toBe('all')
     expect(state.page.value).toBe(1)
-    expect(state.hasQueryValue('ownerType')).toBe(false)
+    expect(state.hasQueryValue('detailType')).toBe(false)
     expect(router.currentRoute.value.query).toEqual({
       external: 'value',
     })
 
-    await router.replace('/?owner_type=stale&page=3')
+    await router.replace('/?detail_type=stale&page=3')
 
-    expect(state.ownerType.value).toBe('all')
+    expect(state.detailType.value).toBe('all')
     expect(state.page.value).toBe(1)
-    expect(state.hasQueryValue('ownerType')).toBe(true)
+    expect(state.hasQueryValue('detailType')).toBe(true)
 
     await state.patch({
-      modal: 'property_owners',
-      ownerType: 'person',
+      view: 'details',
+      detailType: 'activity',
       page: 4,
     })
 
     expect(router.currentRoute.value.query).toEqual({
-      modal: 'property_owners',
-      owner_type: 'person',
+      view: 'details',
+      detail_type: 'activity',
       page: '4',
     })
   })
@@ -476,14 +476,14 @@ describe('useUrlState', () => {
       run(() =>
         useUrlState(
           {
-            modal: {
+            view: {
               type: 'string',
               defaultValue: null,
             },
           },
           {
             groups: {
-              modalGroup: {
+              viewGroup: {
                 fields: ['missing'],
               },
             },
