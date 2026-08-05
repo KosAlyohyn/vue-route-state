@@ -3,11 +3,13 @@ import { computed } from 'vue'
 import { useUrlState } from 'vue-route-state'
 import { useRoute, useRouter } from 'vue-router'
 
+import DemoInspector from '../components/DemoInspector.vue'
+
 const route = useRoute()
 const router = useRouter()
 const availableTags = ['router', 'query', 'docs', 'debug']
 
-const state = useUrlState({
+const schema = {
   tags: {
     type: 'array',
     key: 'tags[]',
@@ -15,9 +17,9 @@ const state = useUrlState({
     defaultValue: [],
     allowedValues: availableTags,
   },
-})
+}
 
-const strictState = useUrlState({
+const strictSchema = {
   strictTags: {
     type: 'array',
     key: 'strict_tags[]',
@@ -26,7 +28,10 @@ const strictState = useUrlState({
     allowedValues: availableTags,
     invalidValues: 'default',
   },
-})
+}
+
+const state = useUrlState(schema)
+const strictState = useUrlState(strictSchema)
 
 const items = [
   {
@@ -67,7 +72,10 @@ const snapshot = computed(() => JSON.stringify(state.values.value, null, 2))
 const strictSnapshot = computed(() =>
   JSON.stringify(strictState.values.value, null, 2),
 )
-const currentQuery = computed(() => JSON.stringify(route.query, null, 2))
+const demoState = computed(() => ({
+  filterMode: state.values.value,
+  defaultMode: strictState.values.value,
+}))
 const aliasTagsPreview = computed(
   () => `tags=${state.tags.value.join('&tags=')}`,
 )
@@ -264,9 +272,9 @@ function clearState() {
       </ul>
     </section>
 
-    <section class="panel">
-      <h3>Current query</h3>
-      <pre>{{ currentQuery }}</pre>
-    </section>
+    <DemoInspector
+      :schema="{ ...schema, ...strictSchema }"
+      :parsed-state="demoState"
+    />
   </section>
 </template>

@@ -2,12 +2,16 @@
 import { computed } from 'vue'
 import { useUrlState } from 'vue-route-state'
 
-const state = useUrlState({
+import DemoInspector from '../components/DemoInspector.vue'
+
+const schema = {
   query: {
     type: 'string',
     defaultValue: '',
   },
-})
+}
+
+const state = useUrlState(schema)
 
 const items = [
   {
@@ -42,8 +46,6 @@ const results = computed(() => {
       item.category.toLowerCase().includes(query),
   )
 })
-
-const snapshot = computed(() => JSON.stringify(state.values.value, null, 2))
 
 function resetState() {
   state.reset()
@@ -83,6 +85,9 @@ function clearState() {
       </ul>
     </section>
 
-    <pre>{{ snapshot }}</pre>
+    <DemoInspector
+      :schema="schema"
+      :parsed-state="state.values.value"
+    />
   </section>
 </template>

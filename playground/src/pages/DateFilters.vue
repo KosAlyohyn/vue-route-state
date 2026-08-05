@@ -3,12 +3,14 @@ import { computed, ref, watch } from 'vue'
 import { useUrlState } from 'vue-route-state'
 import { useRoute, useRouter } from 'vue-router'
 
+import DemoInspector from '../components/DemoInspector.vue'
+
 const route = useRoute()
 const router = useRouter()
 const rawPeriodStart = ref('')
 const rawPeriodEnd = ref('')
 
-const state = useUrlState({
+const schema = {
   periodStart: {
     type: 'date',
     key: 'period_start',
@@ -19,7 +21,9 @@ const state = useUrlState({
     key: 'period_end',
     defaultValue: null,
   },
-})
+}
+
+const state = useUrlState(schema)
 
 const events = [
   {
@@ -53,8 +57,6 @@ const results = computed(() => {
   })
 })
 
-const currentQuery = computed(() => JSON.stringify(route.query, null, 2))
-const snapshot = computed(() => JSON.stringify(state.values.value, null, 2))
 const hasDateQuery = computed(() => {
   return (
     Object.prototype.hasOwnProperty.call(route.query, 'period_start') ||
@@ -180,11 +182,9 @@ function clearState() {
       </ul>
     </section>
 
-    <section class="panel">
-      <h3>Current query</h3>
-      <pre>{{ currentQuery }}</pre>
-    </section>
-
-    <pre>{{ snapshot }}</pre>
+    <DemoInspector
+      :schema="schema"
+      :parsed-state="state.values.value"
+    />
   </section>
 </template>

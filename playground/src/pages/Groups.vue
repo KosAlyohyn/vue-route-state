@@ -1,9 +1,20 @@
 <script setup>
 import { computed, ref } from 'vue'
 import { useUrlState } from 'vue-route-state'
-import { useRoute } from 'vue-router'
 
-const route = useRoute()
+import DemoInspector from '../components/DemoInspector.vue'
+
+const exampleCode = `const state = useUrlState(schema, {
+  order: ['view', 'detailTab', 'detailPage'],
+  groups: {
+    details: {
+      fields: ['detailTab', 'detailPage'],
+      clearWhenDisabled: true,
+      enabledWhen: ({ values }) => values.view === 'details',
+    },
+  },
+})`
+
 const clearWhenDisabled = ref(true)
 
 const schema = {
@@ -45,10 +56,7 @@ const state = computed(() =>
   clearWhenDisabled.value ? clearState : preserveState,
 )
 
-const currentQuery = computed(() => JSON.stringify(route.query, null, 2))
-const snapshot = computed(() =>
-  JSON.stringify(state.value.values.value, null, 2),
-)
+const parsedValues = computed(() => state.value.values.value)
 const isDetails = computed(() => state.value.view.value === 'details')
 
 function openDetails() {
@@ -138,14 +146,10 @@ function resetState() {
       </p>
     </form>
 
-    <section class="panel">
-      <h3>Current query</h3>
-      <pre>{{ currentQuery }}</pre>
-    </section>
-
-    <section class="panel">
-      <h3>Parsed values</h3>
-      <pre>{{ snapshot }}</pre>
-    </section>
+    <DemoInspector
+      :code="exampleCode"
+      code-label="Example code"
+      :parsed-state="parsedValues"
+    />
   </section>
 </template>

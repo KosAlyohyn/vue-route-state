@@ -3,10 +3,12 @@ import { computed } from 'vue'
 import { useUrlState } from 'vue-route-state'
 import { useRoute, useRouter } from 'vue-router'
 
+import DemoInspector from '../components/DemoInspector.vue'
+
 const route = useRoute()
 const router = useRouter()
 
-const state = useUrlState({
+const schema = {
   search: {
     type: 'string',
     aliases: ['q'],
@@ -24,7 +26,9 @@ const state = useUrlState({
     aliases: ['tags'],
     defaultValue: [],
   },
-})
+}
+
+const state = useUrlState(schema)
 
 const availableTags = ['docs', 'debug', 'router', 'query']
 
@@ -70,8 +74,6 @@ const results = computed(() => {
   })
 })
 
-const currentQuery = computed(() => JSON.stringify(route.query, null, 2))
-const snapshot = computed(() => JSON.stringify(state.values.value, null, 2))
 const hasManagedQuery = computed(() => {
   return (
     Object.prototype.hasOwnProperty.call(route.query, 'search') ||
@@ -135,6 +137,10 @@ function normalizeUrl() {
     hideDuplicates: state.hideDuplicates.value,
     tags: state.tags.value,
   })
+}
+
+function resetState() {
+  state.reset()
 }
 
 function clearState() {
@@ -206,6 +212,9 @@ function clearState() {
         >
           Normalize URL
         </button>
+        <button type="button" :disabled="!hasManagedQuery" @click="resetState">
+          Reset filters
+        </button>
         <button type="button" :disabled="!hasManagedQuery" @click="clearState">
           Clear URL params
         </button>
@@ -222,11 +231,9 @@ function clearState() {
       </ul>
     </section>
 
-    <section class="panel">
-      <h3>Current query</h3>
-      <pre>{{ currentQuery }}</pre>
-    </section>
-
-    <pre>{{ snapshot }}</pre>
+    <DemoInspector
+      :schema="schema"
+      :parsed-state="state.values.value"
+    />
   </section>
 </template>

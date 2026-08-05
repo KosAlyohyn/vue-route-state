@@ -3,16 +3,20 @@ import { computed, ref } from 'vue'
 import { useUrlState } from 'vue-route-state'
 import { useRoute, useRouter } from 'vue-router'
 
+import DemoInspector from '../components/DemoInspector.vue'
+
 const route = useRoute()
 const router = useRouter()
 const omitFalseInUrl = ref(false)
 
-const state = useUrlState({
+const schema = {
   value: {
     type: 'boolean',
     defaultValue: false,
   },
-})
+}
+
+const state = useUrlState(schema)
 
 const items = [
   {
@@ -31,8 +35,6 @@ const results = computed(() => {
   return items.filter((item) => item.visibleWhenEnabled === state.value.value)
 })
 
-const currentQuery = computed(() => JSON.stringify(route.query, null, 2))
-const snapshot = computed(() => JSON.stringify(state.values.value, null, 2))
 const hasBooleanQuery = computed(() => {
   return Object.prototype.hasOwnProperty.call(route.query, 'value')
 })
@@ -167,11 +169,9 @@ function clearState() {
       </ul>
     </section>
 
-    <section class="panel">
-      <h3>Current query</h3>
-      <pre>{{ currentQuery }}</pre>
-    </section>
-
-    <pre>{{ snapshot }}</pre>
+    <DemoInspector
+      :schema="schema"
+      :parsed-state="state.values.value"
+    />
   </section>
 </template>
