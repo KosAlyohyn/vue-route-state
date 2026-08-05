@@ -3,6 +3,46 @@ import { computed } from 'vue'
 import { useUrlQueryParam, useUrlState } from 'vue-route-state'
 import { useRoute, useRouter } from 'vue-router'
 
+import DemoInspector from '../components/DemoInspector.vue'
+
+const exampleCode = `const sort = useUrlQueryParam('sort', {
+  defaultValue: { key: 'name', order: 'asc' },
+  parse(value, defaultValue) {
+    const raw = Array.isArray(value) ? value[0] : value
+    const [key, order] = String(raw || '').split(':')
+
+    return key && order ? { key, order } : defaultValue
+  },
+  serialize(value, defaultValue) {
+    return value.key === defaultValue.key && value.order === defaultValue.order
+      ? null
+      : value.key + ':' + value.order
+  },
+})
+
+const schemaState = useUrlState({
+  schemaSearch: {
+    type: 'string',
+    key: 'schema_search',
+    defaultValue: '',
+    transform(value) {
+      return String(value).trim()
+    },
+  },
+  schemaSort: {
+    type: 'custom',
+    key: 'schema_sort',
+    defaultValue: { key: 'name', order: 'asc' },
+    parse(raw, field) {
+      const [key, order] = String(raw || '').split(':')
+      return key && order ? { key, order } : field.defaultValue
+    },
+    serialize(value) {
+      return value.key + ':' + value.order
+    },
+  },
+})`
+
 const route = useRoute()
 const router = useRouter()
 const sortKeys = ['name', 'created_at', 'status']
@@ -107,21 +147,14 @@ const schemaState = useUrlState({
   },
 })
 
-const currentQuery = computed(() => JSON.stringify(route.query, null, 2))
-const lowLevelSnapshot = computed(() =>
-  JSON.stringify(
-    {
-      archived: archived.value,
-      sort: sort.value,
-      payload: payload.value,
-    },
-    null,
-    2,
-  ),
-)
-const schemaSnapshot = computed(() =>
-  JSON.stringify(schemaState.values.value, null, 2),
-)
+const demoState = computed(() => ({
+  queryParam: {
+    archived: archived.value,
+    sort: sort.value,
+    payload: payload.value,
+  },
+  schema: schemaState.values.value,
+}))
 const hasManagedQuery = computed(() => {
   return [
     'archived',
@@ -340,23 +373,10 @@ function clearState() {
       </p>
     </section>
 
-    <section class="panel">
-      <h3>Parsed state</h3>
-      <div class="debug-grid">
-        <div>
-          <h4>query param</h4>
-          <pre>{{ lowLevelSnapshot }}</pre>
-        </div>
-        <div>
-          <h4>schema</h4>
-          <pre>{{ schemaSnapshot }}</pre>
-        </div>
-      </div>
-    </section>
-
-    <section class="panel">
-      <h3>Current query</h3>
-      <pre>{{ currentQuery }}</pre>
-    </section>
+    <DemoInspector
+      :code="exampleCode"
+      code-label="Example code"
+      :parsed-state="demoState"
+    />
   </section>
 </template>

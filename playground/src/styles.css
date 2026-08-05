@@ -98,7 +98,21 @@ pre {
 
 .nav {
   display: grid;
+  gap: 20px;
+}
+
+.nav-group {
+  display: grid;
   gap: 8px;
+}
+
+.nav-group h2 {
+  margin: 0;
+  color: #6b7a89;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0;
+  text-transform: uppercase;
 }
 
 .nav a {
@@ -176,6 +190,33 @@ pre {
   font-size: 13px;
   text-transform: uppercase;
   color: #52616f;
+}
+
+.demo-inspector {
+  gap: 16px;
+}
+
+.demo-inspector__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.demo-inspector__header h3 {
+  margin: 0;
+}
+
+.demo-code-panel {
+  display: grid;
+  gap: 8px;
+}
+
+.demo-code-panel h4 {
+  margin: 0;
+  color: #52616f;
+  font-size: 13px;
+  text-transform: uppercase;
 }
 
 .checkbox {
@@ -321,6 +362,11 @@ pre {
   .debug-grid,
   .docs-section {
     grid-template-columns: 1fr;
+  }
+
+  .demo-inspector__header {
+    align-items: stretch;
+    flex-direction: column;
   }
 
   .docs-hero h2 {

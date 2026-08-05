@@ -6,6 +6,7 @@ import DateFilters from './pages/DateFilters.vue'
 import Docs from './pages/Docs.vue'
 import Groups from './pages/Groups.vue'
 import LegacyUrls from './pages/LegacyUrls.vue'
+import Pagination from './pages/Pagination.vue'
 import SearchFilters from './pages/SearchFilters.vue'
 import TagFilters from './pages/TagFilters.vue'
 
@@ -25,6 +26,11 @@ export const router = createRouter({
       path: '/search',
       name: 'search',
       component: SearchFilters,
+    },
+    {
+      path: '/pagination',
+      name: 'pagination',
+      component: Pagination,
     },
     {
       path: '/boolean',
