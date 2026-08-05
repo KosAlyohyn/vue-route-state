@@ -18,6 +18,8 @@ All notable changes to this project are documented in this file.
 
 ### Changed
 
+- Removed `replace: false` before `1.0`; use `history: 'push'` instead.
+- Standardized runtime error messages with the `vue-route-state:` prefix.
 - Clarified compatibility policy and migration wording around history mode.
 - Cleaned test naming so examples stay application-neutral.
 - Updated the library build global name to `VueRouteState`.

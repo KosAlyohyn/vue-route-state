@@ -49,11 +49,10 @@ function serializeDefault(value) {
 }
 
 function normalizeHistory(options) {
-  const history =
-    options.history ?? (options.replace === false ? 'push' : 'replace')
+  const history = options.history ?? 'replace'
 
   if (history !== 'replace' && history !== 'push') {
-    throw new Error(`Unsupported history mode: ${history}`)
+    throw new Error(`vue-route-state: Unsupported history mode: ${history}`)
   }
 
   return history

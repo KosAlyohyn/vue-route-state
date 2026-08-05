@@ -76,7 +76,7 @@ Use `useUrlQueryParam` when a parameter needs custom parsing or serialization in
 
 The parser receives the raw Vue Router query value and `defaultValue`. The serializer receives the next value and `defaultValue`. Returning `undefined`, `null`, or an empty string removes the query parameter.
 
-Writes use `router.replace()` by default. Pass `history: 'push'` to use `router.push()`. `replace: false` is still accepted by `useUrlQueryParam` as a migration alias for older wrappers.
+Writes use `router.replace()` by default. Pass `history: 'push'` to use `router.push()`.
 
 Pass both `route` and `router` when a wrapper or test already has an explicit router context:
 
@@ -390,7 +390,7 @@ await state.patch({
 })
 ```
 
-`patch()` updates only provided fields. `undefined` means “do not change this field”. `null` removes the field from the URL. Unknown fields throw `Unknown URL state field: name`.
+`patch()` updates only provided fields. `undefined` means “do not change this field”. `null` removes the field from the URL. Unknown fields throw `vue-route-state: Unknown URL state field: name`.
 
 The second argument can override the history mode for one action:
 

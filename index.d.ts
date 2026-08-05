@@ -36,7 +36,6 @@ export interface UrlQueryParamOptions<
     defaultValue: Value,
   ) => LocationQueryValueRaw | LocationQueryValueRaw[] | undefined
   history?: UrlStateHistoryMode
-  replace?: boolean
 }
 
 export interface UrlStateEnabledWhenContext<

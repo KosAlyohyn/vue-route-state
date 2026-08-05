@@ -96,25 +96,8 @@ describe('useUrlQueryParam', () => {
         route: {},
       }),
     ).toThrow(
-      'vue-route-state requires both route and router when using explicit router context.',
+      'vue-route-state: requires both route and router when using explicit router context.',
     )
-  })
-
-  it('supports replace false as a push shortcut', async () => {
-    const { router, run } = await createHarness('/')
-    const search = run(() =>
-      useUrlQueryParam('search', {
-        defaultValue: '',
-        replace: false,
-      }),
-    )
-    const push = vi.spyOn(router, 'push')
-
-    search.value = 'hello'
-    await flushRouter()
-
-    expect(push).toHaveBeenCalledTimes(1)
-    expect(router.currentRoute.value.query).toEqual({ search: 'hello' })
   })
 
   it('supports history push', async () => {
@@ -149,7 +132,7 @@ describe('useUrlQueryParam', () => {
     const app = createApp({})
 
     expect(() => app.runWithContext(() => useUrlQueryParam('search'))).toThrow(
-      'vue-route-state requires Vue Router',
+      'vue-route-state: requires Vue Router',
     )
   })
 })

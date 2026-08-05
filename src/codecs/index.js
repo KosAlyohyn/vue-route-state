@@ -36,7 +36,7 @@ export function getCodec(type) {
   const codec = codecs[type]
 
   if (!codec) {
-    throw new Error(`Unsupported URL state type: ${type}`)
+    throw new Error(`vue-route-state: Unsupported URL state type: ${type}`)
   }
 
   return codec

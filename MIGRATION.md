@@ -85,7 +85,7 @@ const sort = useUrlQueryParam('sort', {
 
 ## Prefer Current History API
 
-Use `history: 'replace' | 'push'` for new code. `useUrlQueryParam` still accepts `replace: false` as a migration alias for older wrappers.
+Use `history: 'replace' | 'push'`. The older `replace: false` wrapper option is intentionally not part of the `1.0` API.
 
 ```js
 const state = useUrlState(schema, {
@@ -106,4 +106,4 @@ const state = useUrlState(schema, {
 
 ## Compatibility Policy
 
-Until `1.0.0`, minor releases may still refine the pre-1.0 API. After `1.0.0`, breaking changes are reserved for major versions. Prefer migration aliases for older wrappers when they are cheap and do not complicate the core API.
+Until `1.0.0`, minor releases may still refine the pre-1.0 API. After `1.0.0`, breaking changes are reserved for major versions. Compatibility aliases are kept only when they do not duplicate stable core options.

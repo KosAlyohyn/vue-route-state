@@ -238,7 +238,7 @@ describe('useUrlState', () => {
     const state = run(() => useUrlState(schema()))
 
     await expect(state.patch({ missing: 'value' })).rejects.toThrow(
-      'Unknown URL state field: missing',
+      'vue-route-state: Unknown URL state field: missing',
     )
   })
 
@@ -348,7 +348,7 @@ describe('useUrlState', () => {
     expect(state.hasQueryValue('page')).toBe(true)
     expect(state.hasQueryValue('tags')).toBe(false)
     expect(() => state.hasQueryValue('missing')).toThrow(
-      'Unknown URL state field: missing',
+      'vue-route-state: Unknown URL state field: missing',
     )
   })
 
@@ -490,7 +490,7 @@ describe('useUrlState', () => {
           },
         ),
       ),
-    ).toThrow('Unknown URL state group field: missing')
+    ).toThrow('vue-route-state: Unknown URL state group field: missing')
   })
 
   it('supports explicit router context', async () => {
@@ -513,7 +513,7 @@ describe('useUrlState', () => {
         route: {},
       }),
     ).toThrow(
-      'vue-route-state requires both route and router when using explicit router context.',
+      'vue-route-state: requires both route and router when using explicit router context.',
     )
   })
 
@@ -568,7 +568,7 @@ describe('useUrlState', () => {
     const state = run(() => useUrlState(schema()))
 
     await expect(state.reset(['page'], { history: 'invalid' })).rejects.toThrow(
-      'Unsupported history mode: invalid',
+      'vue-route-state: Unsupported history mode: invalid',
     )
   })
 
@@ -613,6 +613,6 @@ describe('useUrlState', () => {
           },
         }),
       ),
-    ).toThrow('Unsupported URL state type: object')
+    ).toThrow('vue-route-state: Unsupported URL state type: object')
   })
 })
