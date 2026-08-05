@@ -4,6 +4,12 @@
 
 The API is intentionally close to `useState`, but the URL is the source of truth. Values are read from `route.query`, and writes use `router.replace()` by default, so browser reload, manual URL edits, back, and forward navigation update the returned refs automatically.
 
+## Links
+
+- Docs and playground: https://kosalyohyn.github.io/vue-route-state/
+- npm package: https://www.npmjs.com/package/vue-route-state
+- Repository: https://github.com/KosAlyohyn/vue-route-state
+
 ## Install
 
 ```bash
@@ -624,11 +630,9 @@ ESLint checks:
 
 Prettier handles formatting through the root `.prettierrc`.
 
-The repository also contains a full demo project in `playground/`:
+The repository also contains the docs and playground app in `playground/`. It is built as the public demo site for GitHub Pages and groups examples by scenario: search, pagination, filters, legacy URLs, and custom codecs.
 
-- `playground/src/pages/SearchFilters.vue` covers strings, booleans, `reset`, and `clear`.
-
-The playground imports the local library source through a Vite alias, so it reflects changes in `src/` immediately.
+The app imports the local library source through a Vite alias, so it reflects changes in `src/` immediately.
 
 ## Commands
 
@@ -640,6 +644,7 @@ npm run format
 npm run format:check
 npm run test
 npm run build
-npm run playground:dev
-npm run playground:build
+npm run docs:dev
+npm run docs:build
+npm run docs:preview
 ```

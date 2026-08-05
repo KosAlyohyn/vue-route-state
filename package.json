@@ -18,7 +18,7 @@
     "query-params",
     "composable"
   ],
-  "homepage": "https://github.com/KosAlyohyn/vue-route-state#readme",
+  "homepage": "https://kosalyohyn.github.io/vue-route-state/",
   "bugs": {
     "url": "https://github.com/KosAlyohyn/vue-route-state/issues"
   },
@@ -62,7 +62,10 @@
     "format:check": "prettier . --check",
     "playground:dev": "npm --prefix playground run dev",
     "playground:build": "npm --prefix playground run build",
-    "playground:preview": "npm --prefix playground run preview"
+    "playground:preview": "npm --prefix playground run preview",
+    "docs:dev": "npm run playground:dev",
+    "docs:build": "npm run playground:build",
+    "docs:preview": "npm run playground:preview"
   },
   "peerDependencies": {
     "vue": "^3.4.0",
