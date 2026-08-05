@@ -46,7 +46,7 @@ const displayCode = computed(() => {
   return (
     'const schema = ' +
     formatValue(props.schema) +
-    "\n\nconst state = useUrlState(schema)"
+    '\n\nconst state = useUrlState(schema)'
   )
 })
 const currentUrl = computed(() => {

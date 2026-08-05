@@ -148,8 +148,8 @@ describe('useUrlQueryParam', () => {
   it('throws a clear error without Vue Router', () => {
     const app = createApp({})
 
-    expect(() =>
-      app.runWithContext(() => useUrlQueryParam('search')),
-    ).toThrow('vue-route-state requires Vue Router')
+    expect(() => app.runWithContext(() => useUrlQueryParam('search'))).toThrow(
+      'vue-route-state requires Vue Router',
+    )
   })
 })

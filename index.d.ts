@@ -12,12 +12,7 @@ export type UrlStateHistoryMode = 'replace' | 'push'
 export type UrlStateInvalidValuesMode = 'filter' | 'default'
 
 export type UrlStateType =
-  | 'array'
-  | 'boolean'
-  | 'custom'
-  | 'date'
-  | 'number'
-  | 'string'
+  'array' | 'boolean' | 'custom' | 'date' | 'number' | 'string'
 
 export interface UrlStateActionOptions {
   history?: UrlStateHistoryMode
@@ -28,8 +23,9 @@ export interface UrlRouterContextOptions {
   router?: Router
 }
 
-export interface UrlQueryParamOptions<Value = unknown>
-  extends UrlRouterContextOptions {
+export interface UrlQueryParamOptions<
+  Value = unknown,
+> extends UrlRouterContextOptions {
   defaultValue?: Value
   parse?: (
     value: LocationQueryValue | LocationQueryValue[] | undefined,
@@ -153,8 +149,9 @@ export type UrlStateSchema<
   Values extends Record<string, unknown> = Record<string, unknown>,
 > = Record<string, AnyUrlStateFieldOptions<Values>>
 
-export interface UrlStateOptions<Schema extends UrlStateSchema>
-  extends UrlRouterContextOptions {
+export interface UrlStateOptions<
+  Schema extends UrlStateSchema,
+> extends UrlRouterContextOptions {
   history?: UrlStateHistoryMode
   order?: readonly (keyof Schema & string)[]
   groups?: Record<string, UrlStateGroupOptions<Schema>>
@@ -169,17 +166,16 @@ export type UrlStateFieldValue<Option> =
       ? DateUrlStateValue
       : Option extends CustomUrlStateFieldOptions<infer Value>
         ? Value
-      : Option extends UrlStateFieldOptions<UrlStateType, infer Value>
-        ? Value
-        : unknown
+        : Option extends UrlStateFieldOptions<UrlStateType, infer Value>
+          ? Value
+          : unknown
 
 export type UrlStateValues<Schema extends UrlStateSchema> = {
   [Name in keyof Schema]: UrlStateFieldValue<Schema[Name]>
 }
 
 export type UrlStateFieldNames<Schema extends UrlStateSchema> =
-  | (keyof Schema & string)
-  | readonly (keyof Schema & string)[]
+  (keyof Schema & string) | readonly (keyof Schema & string)[]
 
 export type UrlStateRefs<Schema extends UrlStateSchema> = {
   [Name in keyof Schema]: WritableComputedRef<UrlStateFieldValue<Schema[Name]>>
