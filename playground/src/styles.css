@@ -308,6 +308,55 @@ pre {
   text-decoration: none;
 }
 
+.docs-examples {
+  display: grid;
+  grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
+  gap: 20px;
+  align-items: start;
+  border-top: 1px solid #d8e0e7;
+  padding-top: 24px;
+}
+
+.example-groups {
+  display: grid;
+  gap: 16px;
+}
+
+.example-group {
+  display: grid;
+  gap: 8px;
+}
+
+.example-group h4 {
+  margin: 0;
+  color: #52616f;
+  font-size: 13px;
+  text-transform: uppercase;
+}
+
+.example-link {
+  display: grid;
+  gap: 2px;
+  border: 1px solid #d8e0e7;
+  border-radius: 8px;
+  background: white;
+  color: #172026;
+  padding: 12px;
+  text-decoration: none;
+}
+
+.example-link:hover {
+  border-color: #8bb9c8;
+}
+
+.example-link span {
+  font-weight: 700;
+}
+
+.example-link small {
+  color: #52616f;
+}
+
 .docs-section {
   display: grid;
   grid-template-columns: minmax(0, 0.85fr) minmax(0, 1.15fr);
@@ -360,6 +409,7 @@ pre {
 
   .grid,
   .debug-grid,
+  .docs-examples,
   .docs-section {
     grid-template-columns: 1fr;
   }
