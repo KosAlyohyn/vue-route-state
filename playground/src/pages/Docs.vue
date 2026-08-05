@@ -163,6 +163,63 @@ await state.patch({ search: state.search.value })`,
     ],
   },
 ]
+const examples = [
+  {
+    group: 'Search & pagination',
+    links: [
+      {
+        to: '/search',
+        title: 'Search',
+        summary: 'One string field backed by the URL.',
+      },
+      {
+        to: '/pagination',
+        title: 'Pagination',
+        summary: 'Positive integer page state with default omission.',
+      },
+    ],
+  },
+  {
+    group: 'Filters',
+    links: [
+      {
+        to: '/boolean',
+        title: 'Boolean filters',
+        summary: 'Boolean values with text and numeric URL formats.',
+      },
+      {
+        to: '/date',
+        title: 'Date filters',
+        summary: 'Strict YYYY-MM-DD parsing and canonical writes.',
+      },
+      {
+        to: '/tag',
+        title: 'Tag filters',
+        summary: 'Array params, aliases, comma fallback, and validation.',
+      },
+      {
+        to: '/groups',
+        title: 'Field groups',
+        summary: 'Shared availability rules for related fields.',
+      },
+    ],
+  },
+  {
+    group: 'Integration',
+    links: [
+      {
+        to: '/legacy',
+        title: 'Legacy URLs',
+        summary: 'Read old query keys while writing current keys.',
+      },
+      {
+        to: '/custom',
+        title: 'Custom codec',
+        summary: 'Low-level query params and schema custom fields.',
+      },
+    ],
+  },
+]
 </script>
 
 <template>
@@ -181,6 +238,35 @@ await state.patch({ search: state.search.value })`,
         {{ section.title }}
       </a>
     </nav>
+
+    <section class="docs-examples" aria-labelledby="examples-heading">
+      <div class="docs-copy">
+        <h3 id="examples-heading">Live Examples</h3>
+        <p>
+          Open a scenario, change the controls, and compare the live URL query
+          with the parsed state and schema panel.
+        </p>
+      </div>
+
+      <div class="example-groups">
+        <section
+          v-for="group in examples"
+          :key="group.group"
+          class="example-group"
+        >
+          <h4>{{ group.group }}</h4>
+          <router-link
+            v-for="link in group.links"
+            :key="link.to"
+            class="example-link"
+            :to="link.to"
+          >
+            <span>{{ link.title }}</span>
+            <small>{{ link.summary }}</small>
+          </router-link>
+        </section>
+      </div>
+    </section>
 
     <article
       v-for="section in sections"

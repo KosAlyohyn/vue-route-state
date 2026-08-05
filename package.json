@@ -16,7 +16,10 @@
     "url-state",
     "query",
     "query-params",
-    "composable"
+    "composable",
+    "state",
+    "filters",
+    "pagination"
   ],
   "homepage": "https://kosalyohyn.github.io/vue-route-state/",
   "bugs": {
@@ -43,7 +46,8 @@
   "files": [
     "dist",
     "index.d.ts",
-    "README.md"
+    "README.md",
+    "CHANGELOG.md"
   ],
   "publishConfig": {
     "access": "public"

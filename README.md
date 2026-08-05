@@ -6,9 +6,10 @@ The API is intentionally close to `useState`, but the URL is the source of truth
 
 ## Links
 
-- Docs and playground: https://kosalyohyn.github.io/vue-route-state/
-- npm package: https://www.npmjs.com/package/vue-route-state
-- Repository: https://github.com/KosAlyohyn/vue-route-state
+- [Docs and playground](https://kosalyohyn.github.io/vue-route-state/)
+- [npm package](https://www.npmjs.com/package/vue-route-state)
+- [Repository](https://github.com/KosAlyohyn/vue-route-state)
+- [Changelog](./CHANGELOG.md)
 
 ## Install
 
@@ -630,7 +631,7 @@ ESLint checks:
 
 Prettier handles formatting through the root `.prettierrc`.
 
-The repository also contains the docs and playground app in `playground/`. It is built as the public demo site for GitHub Pages and groups examples by scenario: search, pagination, filters, legacy URLs, and custom codecs.
+The repository also contains the docs and playground app in `playground/`. It is built as the public demo site for GitHub Pages and groups examples by scenario: search, pagination, filters, legacy URLs, and custom codecs. Pushes to `main` deploy it through GitHub Actions.
 
 The app imports the local library source through a Vite alias, so it reflects changes in `src/` immediately.
 
