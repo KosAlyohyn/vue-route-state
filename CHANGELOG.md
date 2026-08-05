@@ -8,12 +8,13 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- Added TypeScript type tests for public API inference.
 - Added a public docs and playground app for GitHub Pages.
 - Added demo scenarios for search, pagination, filters, legacy URLs, and custom codecs.
 - Added GitHub Pages deployment workflow for the playground build.
 - Added docs scripts for local development, build, and preview.
 - Added a migration guide.
-- Added a package dry-run script for release checks and npm publish guard.
+- Added package validation with `npm pack --dry-run`, `publint`, and `attw --pack` for release checks and npm publish guard.
 
 ### Changed
 

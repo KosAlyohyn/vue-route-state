@@ -141,7 +141,7 @@ export type AnyUrlStateFieldOptions<
   | StringUrlStateFieldOptions<string, Values>
   | NumberUrlStateFieldOptions<number, Values>
   | BooleanUrlStateFieldOptions<boolean, Values>
-  | CustomUrlStateFieldOptions<unknown, Values>
+  | CustomUrlStateFieldOptions<any, Values>
   | DateUrlStateFieldOptions<DateUrlStateValue, Values>
   | ArrayUrlStateFieldOptions<readonly string[], Values>
 
@@ -158,7 +158,9 @@ export interface UrlStateOptions<
 }
 
 export type UrlStateFieldValue<Option> =
-  Option extends UrlStateFieldOptions<'array', infer Value>
+  Option extends UrlStateFieldOptions<'boolean', unknown>
+    ? boolean
+    : Option extends UrlStateFieldOptions<'array', infer Value>
     ? Value extends readonly string[]
       ? string[]
       : Value
