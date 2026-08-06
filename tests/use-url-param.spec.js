@@ -100,7 +100,7 @@ describe('useUrlParam', () => {
         route: {},
       }),
     ).toThrow(
-      'vue-route-state requires both route and router when using explicit router context.',
+      'vue-route-state: requires both route and router when using explicit router context.',
     )
   })
 
@@ -132,6 +132,6 @@ describe('useUrlParam', () => {
           defaultValue: '',
         }),
       ),
-    ).toThrow('vue-route-state requires Vue Router')
+    ).toThrow('vue-route-state: requires Vue Router')
   })
 })

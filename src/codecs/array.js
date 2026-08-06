@@ -56,7 +56,7 @@ function normalizeInvalidValues(invalidValues) {
   const mode = invalidValues ?? DEFAULT_INVALID_VALUES
 
   if (!INVALID_VALUES_MODES.includes(mode)) {
-    throw new Error(`Unsupported array invalidValues mode: ${mode}`)
+    throw new Error(`vue-route-state: Unsupported array invalidValues mode: ${mode}`)
   }
 
   return mode

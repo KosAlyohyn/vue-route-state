@@ -4,7 +4,7 @@ export default defineConfig({
   build: {
     lib: {
       entry: 'src/index.js',
-      name: 'VueUrlState',
+      name: 'VueRouteState',
       fileName: (format) =>
         format === 'es' ? 'vue-route-state.js' : 'vue-route-state.cjs',
       formats: ['es', 'cjs'],

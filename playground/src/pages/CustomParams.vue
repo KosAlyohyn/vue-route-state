@@ -77,10 +77,7 @@ const sort = useUrlQueryParam('sort', {
     return { key, order }
   },
   serialize(value, defaultValue) {
-    if (
-      value.key === defaultValue.key &&
-      value.order === defaultValue.order
-    ) {
+    if (value.key === defaultValue.key && value.order === defaultValue.order) {
       return null
     }
 
@@ -156,13 +153,9 @@ const demoState = computed(() => ({
   schema: schemaState.values.value,
 }))
 const hasManagedQuery = computed(() => {
-  return [
-    'archived',
-    'sort',
-    'payload',
-    'schema_search',
-    'schema_sort',
-  ].some((key) => Object.prototype.hasOwnProperty.call(route.query, key))
+  return ['archived', 'sort', 'payload', 'schema_search', 'schema_sort'].some(
+    (key) => Object.prototype.hasOwnProperty.call(route.query, key),
+  )
 })
 
 function setSortKey(key) {
@@ -246,8 +239,8 @@ function clearState() {
     <header class="page-header">
       <h2>Custom params</h2>
       <p>
-        Low-level custom query params and schema-based custom fields with
-        value transforms.
+        Low-level custom query params and schema-based custom fields with value
+        transforms.
       </p>
     </header>
 
@@ -356,18 +349,10 @@ function clearState() {
         <button type="button" @click="loadMalformedValues">
           Load malformed values
         </button>
-        <button
-          type="button"
-          :disabled="!hasManagedQuery"
-          @click="resetState"
-        >
+        <button type="button" :disabled="!hasManagedQuery" @click="resetState">
           Reset params
         </button>
-        <button
-          type="button"
-          :disabled="!hasManagedQuery"
-          @click="clearState"
-        >
+        <button type="button" :disabled="!hasManagedQuery" @click="clearState">
           Clear URL params
         </button>
       </p>

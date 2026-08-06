@@ -31,11 +31,14 @@ jobs:
       - name: Test
         run: npm run test
 
+      - name: Typecheck
+        run: npm run typecheck
+
       - name: Build library
         run: npm run build
 
       - name: Check npm package contents
-        run: npm pack --dry-run
+        run: npm run package:check
 
       - name: Install playground dependencies
         run: npm ci --prefix playground
