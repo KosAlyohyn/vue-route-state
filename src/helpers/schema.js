@@ -1,7 +1,18 @@
+const RESERVED_FIELD_NAMES = [
+  'patch',
+  'clear',
+  'reset',
+  'snapshot',
+  'values',
+  'hasQueryValue',
+]
+
 export function normalizeSchema(schema) {
   const fields = {}
 
   for (const [name, options] of Object.entries(schema)) {
+    assertAllowedFieldName(name)
+
     fields[name] = {
       ...options,
       name,
@@ -12,6 +23,14 @@ export function normalizeSchema(schema) {
   }
 
   return fields
+}
+
+function assertAllowedFieldName(name) {
+  if (RESERVED_FIELD_NAMES.includes(name)) {
+    throw new Error(
+      `vue-route-state: "${name}" is a reserved URL state field name`,
+    )
+  }
 }
 
 export function orderFields(fields, order = []) {

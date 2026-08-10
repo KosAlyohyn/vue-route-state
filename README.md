@@ -251,6 +251,8 @@ Supported field options:
 
 `key` defaults to the schema field name. `omitDefault` defaults to `true`, so assigning the default value removes the parameter from the URL. Set `omitDefault: false` to write default values explicitly.
 
+Schema field names cannot use returned helper names: `patch`, `clear`, `reset`, `snapshot`, `values`, or `hasQueryValue`.
+
 Use `transform(value, field)` to normalize values after parsing and before serialization:
 
 ```js
