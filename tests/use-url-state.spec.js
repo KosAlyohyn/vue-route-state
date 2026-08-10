@@ -268,6 +268,47 @@ describe('useUrlState', () => {
     })
   })
 
+  it('does not write string or number values outside allowedValues', async () => {
+    const { router, run } = await createHarness('/?external=value')
+    const state = run(() =>
+      useUrlState({
+        order: {
+          type: 'string',
+          defaultValue: 'newest',
+          allowedValues: ['newest', 'oldest'],
+        },
+        pageSize: {
+          type: 'number',
+          key: 'page_size',
+          defaultValue: 25,
+          allowedValues: [25, 50],
+        },
+      }),
+    )
+
+    await state.patch({
+      order: 'invalid',
+      pageSize: 100,
+    })
+
+    expect(router.currentRoute.value.query).toEqual({
+      external: 'value',
+    })
+    expect(state.order.value).toBe('newest')
+    expect(state.pageSize.value).toBe(25)
+
+    await state.patch({
+      order: 'oldest',
+      pageSize: 50,
+    })
+
+    expect(router.currentRoute.value.query).toEqual({
+      external: 'value',
+      order: 'oldest',
+      page_size: '50',
+    })
+  })
+
   it('resets all or selected fields to defaults', async () => {
     const { router, run } = await createHarness(
       '/?external=value&search=hello&page=2&enabled=1&order=oldest',
