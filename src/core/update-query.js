@@ -36,7 +36,7 @@ export function createQueryUpdater(route, router, fields, options = {}) {
       const field = fields[name]
 
       if (!field) {
-        throw new Error(`Unknown URL state field: ${name}`)
+        throw new Error(`vue-route-state: Unknown URL state field: ${name}`)
       }
 
       nextValues[name] = cloneValue(value)
@@ -135,7 +135,7 @@ function cloneRouteParams(params) {
 
 function normalizeHistory(history) {
   if (history !== 'replace' && history !== 'push') {
-    throw new Error(`Unsupported history mode: ${history}`)
+    throw new Error(`vue-route-state: Unsupported history mode: ${history}`)
   }
 
   return history

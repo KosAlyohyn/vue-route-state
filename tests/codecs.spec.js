@@ -138,7 +138,7 @@ describe('codecs', () => {
         allowedValues: ['one'],
         invalidValues: 'reject',
       }),
-    ).toThrow('Unsupported array invalidValues mode: reject')
+    ).toThrow('vue-route-state: Unsupported array invalidValues mode: reject')
     expect(serializeArray([])).toBeNull()
   })
 
@@ -167,16 +167,16 @@ describe('codecs', () => {
 
   it('requires custom parse and serialize functions', () => {
     expect(() => parseCustom('value', {})).toThrow(
-      'Custom URL state fields require a parse function',
+      'vue-route-state: Custom URL state fields require a parse function',
     )
     expect(() => serializeCustom('value', {})).toThrow(
-      'Custom URL state fields require a serialize function',
+      'vue-route-state: Custom URL state fields require a serialize function',
     )
   })
 
   it('throws for unknown types', () => {
     expect(() => getCodec('object')).toThrow(
-      'Unsupported URL state type: object',
+      'vue-route-state: Unsupported URL state type: object',
     )
   })
 })

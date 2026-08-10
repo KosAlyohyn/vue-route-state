@@ -39,7 +39,11 @@ const navGroups = [
       </div>
 
       <nav class="nav">
-        <section v-for="group in navGroups" :key="group.label" class="nav-group">
+        <section
+          v-for="group in navGroups"
+          :key="group.label"
+          class="nav-group"
+        >
           <h2>{{ group.label }}</h2>
           <router-link v-for="link in group.links" :key="link.to" :to="link.to">
             {{ link.label }}

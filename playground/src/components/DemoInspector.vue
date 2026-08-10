@@ -46,15 +46,20 @@ const displayCode = computed(() => {
   return (
     'const schema = ' +
     formatValue(props.schema) +
-    "\n\nconst state = useUrlState(schema)"
+    '\n\nconst state = useUrlState(schema)'
   )
 })
-const currentUrl = computed(() => {
+const demoLink = computed(() => {
   if (typeof window === 'undefined') {
     return route.fullPath
   }
 
-  return window.location.origin + route.fullPath
+  return (
+    window.location.origin +
+    window.location.pathname +
+    window.location.search +
+    window.location.hash
+  )
 })
 
 function formatValue(value, level = 0) {
@@ -97,8 +102,8 @@ async function copyText(name, value) {
       <h3>Demo state</h3>
 
       <p class="actions">
-        <button type="button" @click="copyText('url', currentUrl)">
-          {{ copied === 'url' ? 'Copied URL' : 'Copy URL' }}
+        <button type="button" @click="copyText('demo-link', demoLink)">
+          {{ copied === 'demo-link' ? 'Copied link' : 'Copy demo link' }}
         </button>
         <button
           v-if="displayCode"

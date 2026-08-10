@@ -10,6 +10,9 @@ The API is intentionally close to `useState`, but the URL is the source of truth
 - [npm package](https://www.npmjs.com/package/vue-route-state)
 - [Repository](https://github.com/KosAlyohyn/vue-route-state)
 - [Changelog](./CHANGELOG.md)
+- [Migration guide](./MIGRATION.md)
+- [Contributing](./CONTRIBUTING.md)
+- [Security policy](./SECURITY.md)
 
 ## Install
 
@@ -22,6 +25,12 @@ Peer dependencies:
 ```bash
 npm install vue vue-router
 ```
+
+## Compatibility
+
+The public API is stable as of `1.0.0`. Breaking changes are reserved for major versions.
+
+The package targets Vue 3 and Vue Router 4 at runtime. Use Node.js `>=20` for repository tooling, builds, tests, and package validation.
 
 ## Public API
 
@@ -71,7 +80,7 @@ Use `useUrlQueryParam` when a parameter needs custom parsing or serialization in
 
 The parser receives the raw Vue Router query value and `defaultValue`. The serializer receives the next value and `defaultValue`. Returning `undefined`, `null`, or an empty string removes the query parameter.
 
-Writes use `router.replace()` by default. Pass `history: 'push'` or `replace: false` to use `router.push()`.
+Writes use `router.replace()` by default. Pass `history: 'push'` to use `router.push()`.
 
 Pass both `route` and `router` when a wrapper or test already has an explicit router context:
 
@@ -361,7 +370,7 @@ the group name.
 
 ## Types
 
-`string` reads the first query value when Vue Router provides an array. Missing values return `defaultValue`.
+`string` reads the first query value when Vue Router provides an array. Missing or empty values return `defaultValue`.
 
 `number` supports finite JavaScript numbers using `Number(value)`. Invalid values such as `abc`, `NaN`, and values less than or equal to zero with `positive: true` return `defaultValue`. Set `integer: true` to reject fractional values such as `2.5`. `0` is valid unless `positive: true` is set.
 
@@ -385,7 +394,7 @@ await state.patch({
 })
 ```
 
-`patch()` updates only provided fields. `undefined` means “do not change this field”. `null` removes the field from the URL. Unknown fields throw `Unknown URL state field: name`.
+`patch()` updates only provided fields. `undefined` means “do not change this field”. `null` removes the field from the URL. Unknown fields throw `vue-route-state: Unknown URL state field: name`.
 
 The second argument can override the history mode for one action:
 
@@ -620,6 +629,8 @@ The library is split into small modules:
 
 ## Development
 
+Use Node.js `>=20` for local development. The repository tooling follows the `packageManager` value declared in `package.json`.
+
 The repository uses a single root `eslint.config.js` for library source, tests, examples, and playground files.
 
 ESLint checks:
@@ -648,4 +659,5 @@ npm run build
 npm run docs:dev
 npm run docs:build
 npm run docs:preview
+npm run package:check
 ```

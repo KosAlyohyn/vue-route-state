@@ -11,7 +11,7 @@ export function resolveRouterContext(options = {}) {
   if (hasRoute || hasRouter) {
     if (!hasRoute || !hasRouter) {
       throw new Error(
-        'vue-route-state requires both route and router when using explicit router context.',
+        'vue-route-state: requires both route and router when using explicit router context. Pass both options together or rely on Vue Router injection.',
       )
     }
 
@@ -24,7 +24,7 @@ export function resolveRouterContext(options = {}) {
 function assertRouterContext(route, router) {
   if (!route || !router) {
     throw new Error(
-      'vue-route-state requires Vue Router. Install Vue Router before calling URL state composables.',
+      'vue-route-state: requires Vue Router. Install Vue Router, call URL state composables after app.use(router), and make sure the app resolves a single vue-router instance.',
     )
   }
 

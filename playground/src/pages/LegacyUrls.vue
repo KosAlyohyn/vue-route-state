@@ -231,9 +231,6 @@ function clearState() {
       </ul>
     </section>
 
-    <DemoInspector
-      :schema="schema"
-      :parsed-state="state.values.value"
-    />
+    <DemoInspector :schema="schema" :parsed-state="state.values.value" />
   </section>
 </template>

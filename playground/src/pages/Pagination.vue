@@ -93,7 +93,11 @@ function resetPagination() {
       </div>
 
       <p class="actions">
-        <button type="button" :disabled="currentPage <= 1" @click="setPage(currentPage - 1)">
+        <button
+          type="button"
+          :disabled="currentPage <= 1"
+          @click="setPage(currentPage - 1)"
+        >
           Previous
         </button>
         <button
@@ -117,9 +121,6 @@ function resetPagination() {
       </ul>
     </section>
 
-    <DemoInspector
-      :schema="schema"
-      :parsed-state="state.values.value"
-    />
+    <DemoInspector :schema="schema" :parsed-state="state.values.value" />
   </section>
 </template>

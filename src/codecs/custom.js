@@ -12,12 +12,12 @@ export function serializeCustom(value, field) {
 
 function assertCustomParser(field) {
   if (typeof field.parse !== 'function') {
-    throw new Error('Custom URL state fields require a parse function')
+    throw new Error('vue-route-state: Custom URL state fields require a parse function')
   }
 }
 
 function assertCustomSerializer(field) {
   if (typeof field.serialize !== 'function') {
-    throw new Error('Custom URL state fields require a serialize function')
+    throw new Error('vue-route-state: Custom URL state fields require a serialize function')
   }
 }
