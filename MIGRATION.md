@@ -8,7 +8,7 @@ The public API is stable as of `1.0.0`. Breaking changes are reserved for major 
 
 - Use `history: 'push'` when a write should add a browser history entry. The older `replace: false` wrapper option is not part of the stable API.
 - Custom schema fields use `type: 'custom'` with `parse(raw, field)`, `serialize(value, field)`, and optional `transform(value, field)`.
-- Router injection uses `{ route, router }` for `useUrlState`, `useUrlParam`, and `useUrlQueryParam`.
+- Router injection uses `{ route, router }` for `useUrlState`, `useUrlParam`, and `useUrlQueryParam`. Use a reactive route source such as `useRoute()` or `router.currentRoute`, not a one-time `router.currentRoute.value` snapshot.
 - Single-field resets use `state.reset('fieldName')` and `state.clear('fieldName')`.
 
 ## Replace Manual Query Reads
@@ -104,11 +104,11 @@ const state = useUrlState(schema, {
 
 ## Router Injection
 
-Pass both `route` and `router` when building wrappers, tests, or integration layers that already own the router context.
+Pass both `route` and `router` when building wrappers, tests, or integration layers that already own the router context. The route source must stay reactive; use `useRoute()` inside components or `router.currentRoute` in tests and wrappers.
 
 ```js
 const state = useUrlState(schema, {
-  route,
+  route: router.currentRoute,
   router,
 })
 ```

@@ -600,7 +600,7 @@ describe('useUrlState', () => {
   it('supports explicit router context', async () => {
     const { router } = await createHarness('/?page=2')
     const state = useUrlState(schema(), {
-      route: router.currentRoute.value,
+      route: router.currentRoute,
       router,
     })
 
