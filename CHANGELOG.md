@@ -4,6 +4,21 @@ All notable changes to this project are documented in this file.
 
 ## Unreleased
 
+## 1.0.1 - 2026-08-10
+
+### Fixed
+
+- Prevented string and number fields from serializing values outside `allowedValues`.
+- Rejected schema field names that conflict with returned URL state helper names.
+- Deep-cloned arrays, plain objects, and dates in URL state snapshots.
+- Kept explicit router context reactive when using `router.currentRoute`.
+
+### Changed
+
+- Added formatting checks to CI and the npm publish guard.
+- Added a CI compatibility job for minimum Vue and Vue Router peer versions.
+- Clarified runtime Node compatibility separately from repository tooling requirements.
+
 ## 1.0.0 - 2026-08-10
 
 ### Added
@@ -48,7 +63,8 @@ All notable changes to this project are documented in this file.
 - Added `transform(value, field)` support for schema fields.
 - Added explicit router injection for `useUrlState`, `useUrlParam`, and `useUrlQueryParam`.
 
-[Unreleased]: https://github.com/KosAlyohyn/vue-route-state/compare/v1.0.0...HEAD
+[Unreleased]: https://github.com/KosAlyohyn/vue-route-state/compare/v1.0.1...HEAD
+[1.0.1]: https://github.com/KosAlyohyn/vue-route-state/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/KosAlyohyn/vue-route-state/compare/v0.6.1...v1.0.0
 [0.6.1]: https://github.com/KosAlyohyn/vue-route-state/compare/v0.6.0...v0.6.1
 [0.6.0]: https://github.com/KosAlyohyn/vue-route-state/releases/tag/v0.6.0

@@ -4,7 +4,9 @@ export function normalizeGroups(fields, groups = {}) {
 
     for (const field of groupFields) {
       if (!fields[field]) {
-        throw new Error(`vue-route-state: Unknown URL state group field: ${field}`)
+        throw new Error(
+          `vue-route-state: Unknown URL state group field: ${field}`,
+        )
       }
     }
 

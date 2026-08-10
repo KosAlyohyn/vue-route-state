@@ -3,11 +3,7 @@ import type { ComputedRef, WritableComputedRef } from 'vue'
 import type { RouteLocationNormalizedLoaded, Router } from 'vue-router'
 
 import type { CustomUrlStateFieldOptions } from '../index.js'
-import {
-  useUrlParam,
-  useUrlQueryParam,
-  useUrlState,
-} from '../index.js'
+import { useUrlParam, useUrlQueryParam, useUrlState } from '../index.js'
 
 const stringParam = useUrlParam('search', {
   type: 'string',
@@ -29,16 +25,17 @@ const arrayParam = useUrlParam('tags', {
 })
 expectType<WritableComputedRef<string[]>>(arrayParam)
 
-const customField: CustomUrlStateFieldOptions<{ key: string; order: string }> = {
-  type: 'custom',
-  defaultValue: { key: 'name', order: 'asc' },
-  parse() {
-    return { key: 'created_at', order: 'desc' }
-  },
-  serialize(value) {
-    return value.key + ':' + value.order
-  },
-}
+const customField: CustomUrlStateFieldOptions<{ key: string; order: string }> =
+  {
+    type: 'custom',
+    defaultValue: { key: 'name', order: 'asc' },
+    parse() {
+      return { key: 'created_at', order: 'desc' }
+    },
+    serialize(value) {
+      return value.key + ':' + value.order
+    },
+  }
 const customParam = useUrlParam('sort', customField)
 expectType<WritableComputedRef<{ key: string; order: string }>>(customParam)
 
@@ -94,17 +91,19 @@ expectType<{
   sort: { key: string; order: string }
 }>(state.snapshot())
 
-expectAssignable<ComputedRef<{
-  search: string
-  page: number
-  tags: string[]
-  enabled: boolean
-  period: string | Date | null
-  sort: { key: string; order: string }
-}>>(state.values)
+expectAssignable<
+  ComputedRef<{
+    search: string
+    page: number
+    tags: string[]
+    enabled: boolean
+    period: string | Date | null
+    sort: { key: string; order: string }
+  }>
+>(state.values)
 
 state.patch({ search: 'router', page: 2 })
-expectError(state.patch({ missing: true }))  // unknown schema key
+expectError(state.patch({ missing: true })) // unknown schema key
 
 state.reset('page')
 state.reset(['search', 'page'])

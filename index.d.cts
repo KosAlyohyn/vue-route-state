@@ -160,16 +160,16 @@ export type UrlStateFieldValue<Option> =
   Option extends UrlStateFieldOptions<'boolean', unknown>
     ? boolean
     : Option extends UrlStateFieldOptions<'array', infer Value>
-    ? Value extends readonly string[]
-      ? string[]
-      : Value
-    : Option extends UrlStateFieldOptions<'date', unknown>
-      ? DateUrlStateValue
-      : Option extends CustomUrlStateFieldOptions<infer Value>
-        ? Value
-        : Option extends UrlStateFieldOptions<UrlStateType, infer Value>
+      ? Value extends readonly string[]
+        ? string[]
+        : Value
+      : Option extends UrlStateFieldOptions<'date', unknown>
+        ? DateUrlStateValue
+        : Option extends CustomUrlStateFieldOptions<infer Value>
           ? Value
-          : unknown
+          : Option extends UrlStateFieldOptions<UrlStateType, infer Value>
+            ? Value
+            : unknown
 
 export type UrlStateValues<Schema extends UrlStateSchema> = {
   [Name in keyof Schema]: UrlStateFieldValue<Schema[Name]>

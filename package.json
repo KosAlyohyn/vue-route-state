@@ -1,6 +1,6 @@
 {
   "name": "vue-route-state",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Minimal Vue 3 composables for keeping reactive state in Vue Router query parameters.",
   "license": "MIT",
   "author": {
@@ -62,13 +62,13 @@
     "access": "public"
   },
   "engines": {
-    "node": ">=20"
+    "node": ">=18"
   },
   "scripts": {
     "test": "vitest run",
     "test:watch": "vitest",
     "build": "vite build",
-    "prepublishOnly": "npm run lint && npm run test && npm run typecheck && npm run build && npm run package:check",
+    "prepublishOnly": "npm run format:check && npm run lint && npm run test && npm run typecheck && npm run build && npm run package:check",
     "lint": "eslint .",
     "lint:fix": "eslint . --fix",
     "format": "prettier . --write",
