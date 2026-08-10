@@ -54,7 +54,9 @@
     "index.d.cts",
     "README.md",
     "CHANGELOG.md",
-    "MIGRATION.md"
+    "MIGRATION.md",
+    "CONTRIBUTING.md",
+    "SECURITY.md"
   ],
   "publishConfig": {
     "access": "public"

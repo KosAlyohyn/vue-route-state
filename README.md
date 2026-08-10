@@ -11,6 +11,8 @@ The API is intentionally close to `useState`, but the URL is the source of truth
 - [Repository](https://github.com/KosAlyohyn/vue-route-state)
 - [Changelog](./CHANGELOG.md)
 - [Migration guide](./MIGRATION.md)
+- [Contributing](./CONTRIBUTING.md)
+- [Security policy](./SECURITY.md)
 
 ## Install
 

@@ -8,6 +8,8 @@ All notable changes to this project are documented in this file.
 
 ### Added
 
+- Added security and contributing documentation.
+
 - Added TypeScript type tests for public API inference.
 - Added a public docs and playground app for GitHub Pages.
 - Added demo scenarios for search, pagination, filters, legacy URLs, and custom codecs.
