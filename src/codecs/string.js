@@ -14,6 +14,12 @@ export function parseString(raw, field) {
   return value
 }
 
-export function serializeString(value) {
-  return String(value)
+export function serializeString(value, field = {}) {
+  const stringValue = String(value)
+
+  if (field.allowedValues && !field.allowedValues.includes(stringValue)) {
+    return null
+  }
+
+  return stringValue
 }

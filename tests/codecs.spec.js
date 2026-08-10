@@ -24,6 +24,8 @@ describe('codecs', () => {
 
     expect(parseString('oldest', field)).toBe('oldest')
     expect(parseString('invalid', field)).toBe('newest')
+    expect(serializeString('oldest', field)).toBe('oldest')
+    expect(serializeString('invalid', field)).toBeNull()
   })
 
   it('reads valid and invalid numbers', () => {
@@ -37,6 +39,8 @@ describe('codecs', () => {
     expect(serializeNumber(2.5)).toBe('2.5')
     expect(serializeNumber(2.5, { integer: true })).toBeNull()
     expect(serializeNumber(2, { integer: true })).toBe('2')
+    expect(serializeNumber(2, { allowedValues: [1, 2] })).toBe('2')
+    expect(serializeNumber(3, { allowedValues: [1, 2] })).toBeNull()
   })
 
   it('reads boolean values and defaults', () => {

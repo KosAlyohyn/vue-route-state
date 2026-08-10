@@ -27,6 +27,10 @@ export function serializeNumber(value, field = {}) {
     return null
   }
 
+  if (field.allowedValues && !field.allowedValues.includes(number)) {
+    return null
+  }
+
   return String(number)
 }
 
