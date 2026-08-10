@@ -39,5 +39,27 @@ export function isFieldEnabled(field, context, groups = []) {
 }
 
 export function cloneValue(value) {
-  return Array.isArray(value) ? [...value] : value
+  if (Array.isArray(value)) {
+    return value.map(cloneValue)
+  }
+
+  if (value instanceof Date) {
+    return new Date(value)
+  }
+
+  if (isPlainObject(value)) {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, item]) => [key, cloneValue(item)]),
+    )
+  }
+
+  return value
+}
+
+function isPlainObject(value) {
+  return (
+    value !== null &&
+    typeof value === 'object' &&
+    Object.getPrototypeOf(value) === Object.prototype
+  )
 }

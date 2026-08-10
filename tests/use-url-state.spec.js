@@ -395,6 +395,45 @@ describe('useUrlState', () => {
     expect(state.values.value.search).toBe('next')
   })
 
+  it('deep clones JSON-like custom values in snapshots', async () => {
+    const defaultValue = {
+      nested: {
+        value: 1,
+      },
+      items: [{ value: 2 }],
+      createdAt: new Date('2026-08-10T00:00:00.000Z'),
+    }
+    const { run } = await createHarness('/')
+    const state = run(() =>
+      useUrlState({
+        payload: {
+          type: 'custom',
+          defaultValue,
+          parse(raw, field) {
+            return field.defaultValue
+          },
+          serialize() {
+            return null
+          },
+        },
+      }),
+    )
+
+    const snapshot = state.snapshot()
+    snapshot.payload.nested.value = 99
+    snapshot.payload.items[0].value = 88
+    snapshot.payload.createdAt.setFullYear(2030)
+
+    expect(defaultValue).toEqual({
+      nested: {
+        value: 1,
+      },
+      items: [{ value: 2 }],
+      createdAt: new Date('2026-08-10T00:00:00.000Z'),
+    })
+    expect(state.snapshot().payload).toEqual(defaultValue)
+  })
+
   it('reports whether a field is explicitly present in the query', async () => {
     const { router, run } = await createHarness(
       '/?page=invalid&tags=active&enabled',
