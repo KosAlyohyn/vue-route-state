@@ -80,7 +80,7 @@ describe('useUrlParam', () => {
     const page = useUrlParam('page', {
       type: 'number',
       defaultValue: 1,
-      route: router.currentRoute.value,
+      route: router.currentRoute,
       router,
     })
 
@@ -90,6 +90,10 @@ describe('useUrlParam', () => {
     await flushRouter()
 
     expect(router.currentRoute.value.query).toEqual({ page: '3' })
+    expect(page.value).toBe(3)
+
+    await router.replace('/?page=4')
+    expect(page.value).toBe(4)
   })
 
   it('requires both route and router for explicit router context', () => {

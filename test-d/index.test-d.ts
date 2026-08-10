@@ -1,9 +1,13 @@
 import { expectAssignable, expectError, expectType } from 'tsd'
-import type { ComputedRef, WritableComputedRef } from 'vue'
+import type { ComputedRef, Ref, WritableComputedRef } from 'vue'
 import type { RouteLocationNormalizedLoaded, Router } from 'vue-router'
 
 import type { CustomUrlStateFieldOptions } from '../index.js'
 import { useUrlParam, useUrlQueryParam, useUrlState } from '../index.js'
+
+declare const route: RouteLocationNormalizedLoaded
+declare const routeRef: Ref<RouteLocationNormalizedLoaded>
+declare const router: Router
 
 const stringParam = useUrlParam('search', {
   type: 'string',
@@ -115,8 +119,6 @@ state.clear(['tags', 'enabled'])
 state.clear()
 expectError(state.clear('missing')) // unknown field name
 
-const route = {} as RouteLocationNormalizedLoaded
-const router = {} as Router
 useUrlState(
   {
     search: {
@@ -128,3 +130,17 @@ useUrlState(
 )
 useUrlParam('search', { type: 'string', defaultValue: '', route, router })
 useUrlQueryParam('search', { defaultValue: '', route, router })
+
+useUrlParam('withRoute', {
+  type: 'string',
+  defaultValue: '',
+  route,
+  router,
+})
+
+useUrlParam('withRouteRef', {
+  type: 'string',
+  defaultValue: '',
+  route: routeRef,
+  router,
+})

@@ -1,3 +1,4 @@
+import { isRef } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 
 export function useRouterContext() {
@@ -29,7 +30,25 @@ function assertRouterContext(route, router) {
   }
 
   return {
-    route,
+    route: normalizeRouteSource(route),
     router,
   }
+}
+
+function normalizeRouteSource(route) {
+  if (!isRef(route)) {
+    return route
+  }
+
+  return new Proxy(
+    {},
+    {
+      get(_target, key) {
+        return route.value[key]
+      },
+      has(_target, key) {
+        return key in route.value
+      },
+    },
+  )
 }
