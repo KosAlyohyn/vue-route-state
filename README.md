@@ -63,13 +63,13 @@ Deleting a value removes the query parameter:
 search.value = null
 ```
 
-Pass both `route` and `router` when a wrapper or test already has an explicit router context:
+Pass both `route` and `router` when a wrapper or test already has an explicit router context. Use a reactive route source, such as `useRoute()` or `router.currentRoute`:
 
 ```js
 const search = useUrlParam('search', {
   type: 'string',
   defaultValue: '',
-  route,
+  route: router.currentRoute,
   router,
 })
 ```
@@ -82,14 +82,14 @@ The parser receives the raw Vue Router query value and `defaultValue`. The seria
 
 Writes use `router.replace()` by default. Pass `history: 'push'` to use `router.push()`.
 
-Pass both `route` and `router` when a wrapper or test already has an explicit router context:
+Pass both `route` and `router` when a wrapper or test already has an explicit router context. Use a reactive route source, such as `useRoute()` or `router.currentRoute`:
 
 ```js
 const payload = useUrlQueryParam('payload', {
   defaultValue: {},
   parse() {},
   serialize() {},
-  route,
+  route: router.currentRoute,
   router,
 })
 ```
@@ -265,16 +265,16 @@ search: {
 
 ## Explicit Router Context
 
-`useUrlState` reads Vue Router from app context by default. Pass both `route` and `router` when building wrappers or tests that already have an explicit router context:
+`useUrlState` reads Vue Router from app context by default. Pass both `route` and `router` when building wrappers or tests that already have an explicit router context. Use a reactive route source, such as `useRoute()` or `router.currentRoute`:
 
 ```js
 const state = useUrlState(schema, {
-  route,
+  route: router.currentRoute,
   router,
 })
 ```
 
-Both values are required. Passing only `route` or only `router` throws an error.
+Both values are required. Passing only `route` or only `router` throws an error. Do not pass a one-time `router.currentRoute.value` snapshot if the returned refs should react to later navigation.
 
 ## Conditional fields
 

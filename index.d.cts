@@ -1,4 +1,4 @@
-import type { ComputedRef, WritableComputedRef } from 'vue'
+import type { ComputedRef, Ref, WritableComputedRef } from 'vue'
 import type {
   LocationQuery,
   LocationQueryValue,
@@ -18,8 +18,12 @@ export interface UrlStateActionOptions {
   history?: UrlStateHistoryMode
 }
 
+export type UrlRouteSource =
+  | RouteLocationNormalizedLoaded
+  | Ref<RouteLocationNormalizedLoaded>
+
 export interface UrlRouterContextOptions {
-  route?: RouteLocationNormalizedLoaded
+  route?: UrlRouteSource
   router?: Router
 }
 
