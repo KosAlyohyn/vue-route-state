@@ -19,8 +19,7 @@ export interface UrlStateActionOptions {
 }
 
 export type UrlRouteSource =
-  | RouteLocationNormalizedLoaded
-  | Ref<RouteLocationNormalizedLoaded>
+  RouteLocationNormalizedLoaded | Ref<RouteLocationNormalizedLoaded>
 
 export interface UrlRouterContextOptions {
   route?: UrlRouteSource
