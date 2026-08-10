@@ -28,9 +28,9 @@ npm install vue vue-router
 
 ## Compatibility
 
-Until `1.0.0`, minor releases may refine the pre-1.0 API. After `1.0.0`, breaking changes are reserved for major versions.
+The public API is stable as of `1.0.0`. Breaking changes are reserved for major versions.
 
-The package targets Vue 3 and Vue Router 4 at runtime. Node.js `>=18` is required for repository tooling, builds, tests, and package validation.
+The package targets Vue 3 and Vue Router 4 at runtime. Use Node.js `>=20` for repository tooling, builds, tests, and package validation.
 
 ## Public API
 
@@ -629,7 +629,7 @@ The library is split into small modules:
 
 ## Development
 
-Use Node.js `>=18` for local development. The repository tooling follows the `packageManager` value declared in `package.json`.
+Use Node.js `>=20` for local development. The repository tooling follows the `packageManager` value declared in `package.json`.
 
 The repository uses a single root `eslint.config.js` for library source, tests, examples, and playground files.
 

@@ -4,6 +4,8 @@ Thanks for helping improve `vue-route-state`.
 
 ## Development Setup
 
+Use Node.js `>=20` and the npm version declared by `packageManager` in `package.json`.
+
 Install dependencies:
 
 ```bash
@@ -37,7 +39,7 @@ npm run docs:build
 
 ## API Stability
 
-Until `1.0.0`, minor releases may refine the pre-1.0 API. After `1.0.0`, breaking changes are reserved for major versions.
+The public API is stable as of `1.0.0`. Breaking changes are reserved for major versions.
 
 ## Release Checklist
 

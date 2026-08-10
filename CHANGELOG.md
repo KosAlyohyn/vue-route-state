@@ -4,12 +4,11 @@ All notable changes to this project are documented in this file.
 
 ## Unreleased
 
-## 0.7.0 - 2026-08-05
+## 1.0.0 - 2026-08-10
 
 ### Added
 
 - Added security and contributing documentation.
-
 - Added TypeScript type tests for public API inference.
 - Added a public docs and playground app for GitHub Pages.
 - Added demo scenarios for search, pagination, filters, legacy URLs, and custom codecs.
@@ -21,7 +20,7 @@ All notable changes to this project are documented in this file.
 ### Changed
 
 - Renamed the playground URL copy action to `Copy demo link` and fixed copied links for the GitHub Pages hash router.
-- Removed `replace: false` before `1.0`; use `history: 'push'` instead.
+- Kept `replace: false` out of the stable API; use `history: 'push'` instead.
 - Standardized runtime error messages with the `vue-route-state:` prefix.
 - Clarified compatibility policy and migration wording around history mode.
 - Cleaned test naming so examples stay application-neutral.
@@ -49,7 +48,7 @@ All notable changes to this project are documented in this file.
 - Added `transform(value, field)` support for schema fields.
 - Added explicit router injection for `useUrlState`, `useUrlParam`, and `useUrlQueryParam`.
 
-[Unreleased]: https://github.com/KosAlyohyn/vue-route-state/compare/v0.7.0...HEAD
-[0.7.0]: https://github.com/KosAlyohyn/vue-route-state/compare/v0.6.1...v0.7.0
+[Unreleased]: https://github.com/KosAlyohyn/vue-route-state/compare/v1.0.0...HEAD
+[1.0.0]: https://github.com/KosAlyohyn/vue-route-state/compare/v0.6.1...v1.0.0
 [0.6.1]: https://github.com/KosAlyohyn/vue-route-state/compare/v0.6.0...v0.6.1
 [0.6.0]: https://github.com/KosAlyohyn/vue-route-state/releases/tag/v0.6.0

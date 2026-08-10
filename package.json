@@ -1,6 +1,6 @@
 {
   "name": "vue-route-state",
-  "version": "0.7.0",
+  "version": "1.0.0",
   "description": "Minimal Vue 3 composables for keeping reactive state in Vue Router query parameters.",
   "license": "MIT",
   "author": {
@@ -30,7 +30,7 @@
     "url": "git+https://github.com/KosAlyohyn/vue-route-state.git"
   },
   "type": "module",
-  "packageManager": "npm@11.12.1",
+  "packageManager": "npm@10",
   "main": "./dist/vue-route-state.cjs",
   "module": "./dist/vue-route-state.js",
   "types": "./index.d.ts",
@@ -62,7 +62,7 @@
     "access": "public"
   },
   "engines": {
-    "node": ">=18"
+    "node": ">=20"
   },
   "scripts": {
     "test": "vitest run",

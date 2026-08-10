@@ -2,6 +2,15 @@
 
 This guide covers the common steps for moving existing Vue Router query helpers to vue-route-state.
 
+## Migrating to 1.0.0
+
+The public API is stable as of `1.0.0`. Breaking changes are reserved for major versions.
+
+- Use `history: 'push'` when a write should add a browser history entry. The older `replace: false` wrapper option is not part of the stable API.
+- Custom schema fields use `type: 'custom'` with `parse(raw, field)`, `serialize(value, field)`, and optional `transform(value, field)`.
+- Router injection uses `{ route, router }` for `useUrlState`, `useUrlParam`, and `useUrlQueryParam`.
+- Single-field resets use `state.reset('fieldName')` and `state.clear('fieldName')`.
+
 ## Replace Manual Query Reads
 
 Before:
@@ -106,4 +115,4 @@ const state = useUrlState(schema, {
 
 ## Compatibility Policy
 
-Until `1.0.0`, minor releases may still refine the pre-1.0 API. After `1.0.0`, breaking changes are reserved for major versions. Compatibility aliases are kept only when they do not duplicate stable core options.
+The public API is stable as of `1.0.0`. Breaking changes are reserved for major versions. Compatibility aliases are kept only when they do not duplicate stable core options.
