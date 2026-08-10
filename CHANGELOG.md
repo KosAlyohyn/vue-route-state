@@ -20,6 +20,7 @@ All notable changes to this project are documented in this file.
 
 ### Changed
 
+- Renamed the playground URL copy action to `Copy demo link` and fixed copied links for the GitHub Pages hash router.
 - Removed `replace: false` before `1.0`; use `history: 'push'` instead.
 - Standardized runtime error messages with the `vue-route-state:` prefix.
 - Clarified compatibility policy and migration wording around history mode.
