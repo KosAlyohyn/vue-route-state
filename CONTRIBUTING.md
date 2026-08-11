@@ -4,7 +4,7 @@ Thanks for helping improve `vue-route-state`.
 
 ## Development Setup
 
-Use Node.js `>=20` and the npm version declared by `packageManager` in `package.json`.
+Use Node.js `24` and the npm version declared by `packageManager` in `package.json`.
 
 Install dependencies:
 
@@ -15,6 +15,7 @@ npm install
 Useful commands:
 
 ```bash
+npm run format:check
 npm run lint
 npm run test
 npm run typecheck

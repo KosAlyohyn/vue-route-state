@@ -56,29 +56,23 @@ describe('useUrlState', () => {
     expect(state.order.value).toBe('newest')
   })
 
-  it.each([
-    'patch',
-    'clear',
-    'reset',
-    'snapshot',
-    'values',
-    'hasQueryValue',
-  ])('rejects reserved field name: %s', async (name) => {
-    const { run } = await createHarness('/')
+  it.each(['patch', 'clear', 'reset', 'snapshot', 'values', 'hasQueryValue'])(
+    'rejects reserved field name: %s',
+    async (name) => {
+      const { run } = await createHarness('/')
 
-    expect(() =>
-      run(() =>
-        useUrlState({
-          [name]: {
-            type: 'string',
-            defaultValue: '',
-          },
-        }),
-      ),
-    ).toThrow(
-      `vue-route-state: "${name}" is a reserved URL state field name`,
-    )
-  })
+      expect(() =>
+        run(() =>
+          useUrlState({
+            [name]: {
+              type: 'string',
+              defaultValue: '',
+            },
+          }),
+        ),
+      ).toThrow(`vue-route-state: "${name}" is a reserved URL state field name`)
+    },
+  )
 
   it('transforms values after parsing and before serialization', async () => {
     const { router, run } = await createHarness('/?search=%20hello%20')
