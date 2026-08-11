@@ -104,7 +104,7 @@ const state = useUrlState(schema, {
 
 ## Router Injection
 
-Pass both `route` and `router` when building wrappers, tests, or integration layers that already own the router context. The route source must stay reactive; use `useRoute()` inside components or `router.currentRoute` in tests and wrappers.
+Pass both `route` and `router` when building wrappers, tests, or integration layers that already own the router context. The same options are accepted by `useUrlState`, `useUrlParam`, and `useUrlQueryParam`. The route source must stay reactive; use `useRoute()` inside app context or `router.currentRoute` in tests and wrappers.
 
 ```js
 const state = useUrlState(schema, {

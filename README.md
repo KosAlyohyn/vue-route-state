@@ -63,17 +63,6 @@ Deleting a value removes the query parameter:
 search.value = null
 ```
 
-Pass both `route` and `router` when a wrapper or test already has an explicit router context. Use a reactive route source, such as `useRoute()` or `router.currentRoute`:
-
-```js
-const search = useUrlParam('search', {
-  type: 'string',
-  defaultValue: '',
-  route: router.currentRoute,
-  router,
-})
-```
-
 ## useUrlQueryParam
 
 Use `useUrlQueryParam` when a parameter needs custom parsing or serialization instead of a built-in codec. It is the low-level primitive behind custom URL state wrappers: the library keeps Vue Router wiring, reactivity, query preservation, and navigation mode handling, while your code defines how the raw query value becomes application state.
@@ -81,18 +70,6 @@ Use `useUrlQueryParam` when a parameter needs custom parsing or serialization in
 The parser receives the raw Vue Router query value and `defaultValue`. The serializer receives the next value and `defaultValue`. Returning `undefined`, `null`, or an empty string removes the query parameter.
 
 Writes use `router.replace()` by default. Pass `history: 'push'` to use `router.push()`.
-
-Pass both `route` and `router` when a wrapper or test already has an explicit router context. Use a reactive route source, such as `useRoute()` or `router.currentRoute`:
-
-```js
-const payload = useUrlQueryParam('payload', {
-  defaultValue: {},
-  parse() {},
-  serialize() {},
-  route: router.currentRoute,
-  router,
-})
-```
 
 ### Legacy URL Values
 
@@ -267,7 +244,9 @@ search: {
 
 ## Explicit Router Context
 
-`useUrlState` reads Vue Router from app context by default. Pass both `route` and `router` when building wrappers or tests that already have an explicit router context. Use a reactive route source, such as `useRoute()` or `router.currentRoute`:
+URL state composables read Vue Router from app context by default. Pass both `route` and `router` when building wrappers, tests, or integration layers that already own the router context.
+
+The `route` option must be reactive when returned refs should update after navigation. Use the object returned by `useRoute()` inside app context, or pass `router.currentRoute` directly in tests and wrappers:
 
 ```js
 const state = useUrlState(schema, {
@@ -276,7 +255,7 @@ const state = useUrlState(schema, {
 })
 ```
 
-Both values are required. Passing only `route` or only `router` throws an error. Do not pass a one-time `router.currentRoute.value` snapshot if the returned refs should react to later navigation.
+The same context options are accepted by `useUrlState`, `useUrlParam`, and `useUrlQueryParam`. Passing only `route` or only `router` throws an error. Avoid `router.currentRoute.value` for reactive state because it is only a one-time route snapshot.
 
 ## Conditional fields
 

@@ -4,11 +4,25 @@ All notable changes to this project are documented in this file.
 
 ## Unreleased
 
-## 1.1.0 - 2026-08-11
+## 1.2.1 - 2026-08-12
+
+### Fixed
+
+- Kept explicit router context reactive when using `router.currentRoute`.
+
+### Documentation
+
+- Clarified reactive route source requirements for explicit router context.
+
+## 1.2.0 - 2026-08-11
 
 ### Changed
 
 - Added Vue Router 5 support. Vue Router 5 is now the primary tested version; Vue Router 4 remains accepted by the peer range because the library only uses stable router APIs.
+
+### Notes
+
+- Version `1.1.0` was skipped in the npm release history.
 
 ## 1.0.1 - 2026-08-11
 
@@ -17,7 +31,6 @@ All notable changes to this project are documented in this file.
 - Prevented string and number fields from serializing values outside `allowedValues`.
 - Rejected schema field names that conflict with returned URL state helper names.
 - Deep-cloned arrays, plain objects, and dates in URL state snapshots.
-- Kept explicit router context reactive when using `router.currentRoute`.
 
 ### Changed
 
@@ -68,8 +81,9 @@ All notable changes to this project are documented in this file.
 - Added `transform(value, field)` support for schema fields.
 - Added explicit router injection for `useUrlState`, `useUrlParam`, and `useUrlQueryParam`.
 
-[Unreleased]: https://github.com/KosAlyohyn/vue-route-state/compare/v1.1.0...HEAD
-[1.1.0]: https://github.com/KosAlyohyn/vue-route-state/compare/v1.0.1...v1.1.0
+[Unreleased]: https://github.com/KosAlyohyn/vue-route-state/compare/v1.2.1...HEAD
+[1.2.1]: https://github.com/KosAlyohyn/vue-route-state/compare/v1.2.0...v1.2.1
+[1.2.0]: https://github.com/KosAlyohyn/vue-route-state/compare/v1.0.1...v1.2.0
 [1.0.1]: https://github.com/KosAlyohyn/vue-route-state/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/KosAlyohyn/vue-route-state/compare/v0.6.1...v1.0.0
 [0.6.1]: https://github.com/KosAlyohyn/vue-route-state/compare/v0.6.0...v0.6.1
