@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { createApp } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 import { useUrlParam } from '../src/index.js'
 
@@ -94,6 +95,23 @@ describe('useUrlParam', () => {
 
     await router.replace('/?page=4')
     expect(page.value).toBe(4)
+  })
+
+  it('supports explicit context from injected router composables', async () => {
+    const { router, run } = await createHarness('/?page=2')
+    const page = run(() =>
+      useUrlParam('page', {
+        type: 'number',
+        defaultValue: 1,
+        route: useRoute(),
+        router: useRouter(),
+      }),
+    )
+
+    expect(page.value).toBe(2)
+
+    await router.replace('/?page=5')
+    expect(page.value).toBe(5)
   })
 
   it('requires both route and router for explicit router context', () => {
