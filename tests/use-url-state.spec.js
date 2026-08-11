@@ -603,6 +603,10 @@ describe('useUrlState', () => {
     await state.patch({ page: 3 })
 
     expect(router.currentRoute.value.query).toEqual({ page: '3' })
+    expect(state.page.value).toBe(3)
+
+    await router.replace('/?page=4')
+    expect(state.page.value).toBe(4)
   })
 
   it('requires both route and router for explicit router context', () => {
