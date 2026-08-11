@@ -4,6 +4,12 @@ All notable changes to this project are documented in this file.
 
 ## Unreleased
 
+## 1.1.0 - 2026-08-11
+
+### Changed
+
+- Added Vue Router 5 support. Vue Router 5 is now the primary tested version; Vue Router 4 remains accepted by the peer range because the library only uses stable router APIs.
+
 ## 1.0.1 - 2026-08-11
 
 ### Fixed
@@ -16,7 +22,6 @@ All notable changes to this project are documented in this file.
 ### Changed
 
 - Added formatting checks to CI and the npm publish guard.
-- Added a CI compatibility job for minimum Vue and Vue Router peer versions.
 - Clarified runtime Node compatibility separately from repository tooling requirements.
 
 ## 1.0.0 - 2026-08-10
@@ -63,7 +68,8 @@ All notable changes to this project are documented in this file.
 - Added `transform(value, field)` support for schema fields.
 - Added explicit router injection for `useUrlState`, `useUrlParam`, and `useUrlQueryParam`.
 
-[Unreleased]: https://github.com/KosAlyohyn/vue-route-state/compare/v1.0.1...HEAD
+[Unreleased]: https://github.com/KosAlyohyn/vue-route-state/compare/v1.1.0...HEAD
+[1.1.0]: https://github.com/KosAlyohyn/vue-route-state/compare/v1.0.1...v1.1.0
 [1.0.1]: https://github.com/KosAlyohyn/vue-route-state/compare/v1.0.0...v1.0.1
 [1.0.0]: https://github.com/KosAlyohyn/vue-route-state/compare/v0.6.1...v1.0.0
 [0.6.1]: https://github.com/KosAlyohyn/vue-route-state/compare/v0.6.0...v0.6.1
