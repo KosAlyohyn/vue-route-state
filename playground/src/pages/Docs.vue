@@ -198,6 +198,11 @@ const examples = [
         summary: 'Array params, aliases, comma fallback, and validation.',
       },
       {
+        to: '/validation',
+        title: 'Validation',
+        summary: 'Guarded writes for string and number allowed values.',
+      },
+      {
         to: '/groups',
         title: 'Field groups',
         summary: 'Shared availability rules for related fields.',
