@@ -17,6 +17,7 @@ const navGroups = [
       { to: '/boolean', label: 'Boolean filters' },
       { to: '/date', label: 'Date filters' },
       { to: '/tag', label: 'Tag filters' },
+      { to: '/validation', label: 'Validation' },
       { to: '/groups', label: 'Field groups' },
     ],
   },

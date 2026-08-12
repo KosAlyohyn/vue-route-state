@@ -1,5 +1,6 @@
 import { describe, expect, it, vi } from 'vitest'
 import { nextTick } from 'vue'
+import { useRoute, useRouter } from 'vue-router'
 
 import { useUrlState } from '../src/index.js'
 
@@ -603,6 +604,25 @@ describe('useUrlState', () => {
     await state.patch({ page: 3 })
 
     expect(router.currentRoute.value.query).toEqual({ page: '3' })
+    expect(state.page.value).toBe(3)
+
+    await router.replace('/?page=4')
+    expect(state.page.value).toBe(4)
+  })
+
+  it('supports explicit context from injected router composables', async () => {
+    const { router, run } = await createHarness('/?page=2')
+    const state = run(() =>
+      useUrlState(schema(), {
+        route: useRoute(),
+        router: useRouter(),
+      }),
+    )
+
+    expect(state.page.value).toBe(2)
+
+    await router.replace('/?page=5')
+    expect(state.page.value).toBe(5)
   })
 
   it('requires both route and router for explicit router context', () => {

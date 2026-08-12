@@ -9,6 +9,7 @@ import LegacyUrls from './pages/LegacyUrls.vue'
 import Pagination from './pages/Pagination.vue'
 import SearchFilters from './pages/SearchFilters.vue'
 import TagFilters from './pages/TagFilters.vue'
+import Validation from './pages/Validation.vue'
 
 export const router = createRouter({
   history: createWebHashHistory(),
@@ -46,6 +47,11 @@ export const router = createRouter({
       path: '/tag',
       name: 'tag',
       component: TagFilters,
+    },
+    {
+      path: '/validation',
+      name: 'validation',
+      component: Validation,
     },
     {
       path: '/groups',
